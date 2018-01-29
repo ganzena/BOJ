@@ -18,15 +18,19 @@ int main(int argc, const char * argv[]) {
     cin>>input;
     int result = 0; // 결과값
     int mul = 1; // 곱하기
+    int cnt1 = 0; //() 체크
+    int cnt2 = 0; //[] 체크
     stack<char> stack;
     for(int i = 0 ; i < input.length() ; i++){
         if(input.at(i) == '('){
+            cnt1++;
             mul *= 2;
             stack.push(input.at(i));
             if(input.at(i + 1) == ')'){ //바로 닫힐 시에 곱한 값을 더한다.
                 result += mul;
             }
         } else if(input.at(i) == '['){
+            cnt2++;
             mul *= 3;
             stack.push(input.at(i));
             if(input.at(i + 1) == ']'){
@@ -34,15 +38,17 @@ int main(int argc, const char * argv[]) {
             }
         }
         else if(input.at(i) == ')' && !stack.empty()){ //push에서 곱해준 만큼 나눠준다.
+            cnt1--;
             mul /= 2;
             stack.pop();
-        } else{
+        } else if(input.at(i) == ']' && !stack.empty()){
+            cnt2--;
             mul /= 3;
             stack.pop();
         }
     }
     
-    if(stack.empty())
+    if(stack.empty() && cnt1 == 0 && cnt2 == 0)
         cout<<result<<endl;
     else
         cout<<0<<endl;
