@@ -9,13 +9,13 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "[1260] DFS&#x110b;&#x116a; BFS/main.cpp"
-            timestampString = "538938632.866712"
+            filePath = "[2941] &#x110f;&#x1173;&#x1105;&#x1169;&#x110b;&#x1161;&#x1110;&#x1175;&#x110b;&#x1161; &#x110b;&#x1161;&#x11af;&#x1111;&#x1161;&#x1107;&#x1166;&#x11ba;/main.cpp"
+            timestampString = "540455278.162032"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "65"
-            endingLineNumber = "65"
-            landmarkName = "BFS(vector&lt; vector&lt;int&gt; &gt; &amp;adj, ::vector&lt;bool&gt; &amp;visited, int source)"
+            startingLineNumber = "23"
+            endingLineNumber = "23"
+            landmarkName = "main(int argc, const char * argv[])"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "[1260] DFS&#x110b;&#x116a; BFS/main.cpp"
-            timestampString = "538938878.5432529"
+            filePath = "[2941] &#x110f;&#x1173;&#x1105;&#x1169;&#x110b;&#x1161;&#x1110;&#x1175;&#x110b;&#x1161; &#x110b;&#x1161;&#x11af;&#x1111;&#x1161;&#x1107;&#x1166;&#x11ba;/main.cpp"
+            timestampString = "540455278.162335"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
-            landmarkName = "BFS(vector&lt; vector&lt;int&gt; &gt; &amp;adj, ::vector&lt;bool&gt; &amp;visited, int source)"
+            startingLineNumber = "22"
+            endingLineNumber = "22"
+            landmarkName = "main(int argc, const char * argv[])"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
