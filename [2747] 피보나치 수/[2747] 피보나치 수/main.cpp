@@ -8,12 +8,15 @@
 
 #include <iostream>
 #include <vector>
+
 using namespace std;
 
+typedef long long int type;
+
 int main(int argc, const char * argv[]) {
-    long input;
+    type input;
     cin>>input;
-    vector<long> vector = {0,1,1};
+    vector<type> vector = {0,1,1};
 
     for(int i = 3 ; i <= input ; i++){
         vector.push_back(vector.at(i - 1) + vector.at(i - 2));
