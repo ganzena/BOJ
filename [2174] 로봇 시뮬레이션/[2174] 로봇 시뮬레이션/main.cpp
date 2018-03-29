@@ -12,146 +12,111 @@
 #define MAX_SPACE_SIZE 100
 using namespace std;
 
-vector<pair<int, int>> direction = {pair<int, int>(-1, 0), pair<int, int>(0, -1), pair<int, int>(1, 0), pair<int, int>(0, 1)};
+vector< pair<int, int> > direction = {pair<int, int>(-1, 0), pair<int, int>(0, -1), pair<int, int>(1, 0), pair<int, int>(0, 1)}; //N W S E
+vector< vector< pair<int, int> > > map;
 
-class Robot{
-private:
-    int robotNo;
-    int curDir; // NORTH = 0, WEST = 1, SOUTH = 2, EAST = 3
-    int curX;
-    int curY;
-    
-public:
-    Robot(int robotNo = NULL, int curDir = NULL, int curX = NULL, int curY = NULL){
-        this->robotNo = robotNo;
-        this->curDir = curDir;
-        this->curX = curX;
-        this->curY = curY;
-    }
-    
-    int getRobotNo(){
-        return this->robotNo;
-    }
-    
-    void setCurDir(int dir){
-        this->curDir = dir;
-    }
-    
-    int getCurDir(){
-        return this->curDir;
-    }
-    
-    int getCurX(){
-        return this->curX;
-    }
-    
-    int getCurY(){
-        return this->curY;
-    }
-    
-    void setCurX(int curX){
-        this->curX = curX;
-    }
-    
-    void setCurY(int curY){
-        this->curY = curY;
-    }
-    
-};
+int MAX_ROW;
+int MAX_COL;
 
 int dirToInt(char);
-void rotateLeft(Robot *);
-void rotateRight(Robot *);
-vector<Robot*> robotVector(101);
-int row, col;
+int turnLeft(int);
+int turnRight(int);
+
 int main(int argc, const char * argv[]) {
-    
-    cin>>col>>row; // 공간의 row, col 행 4 열 5
-    vector< vector<Robot*> > space(row, vector<Robot*>(col, NULL));
+    cin>>MAX_COL>>MAX_ROW;
+    map.assign(MAX_ROW, vector< pair<int, int> >(MAX_COL, pair<int, int>(0, -1)));
     int robotNum, cmdNum;
-    cin>>robotNum>>cmdNum;
     int serialNo = 1;
+    cin>>robotNum>>cmdNum;
     
-    while(robotNum--){ //로봇 초기설정
-        int locX, locY;
-        char dir;
-        cin>>locY>>locX>>dir; //열 행 방향
-        int dirInt = dirToInt(dir);
-        locX = row - locX;
-        locY--;
-        Robot* robot = new Robot(serialNo, dirInt, locX, locY);
-        space[locX][locY] = robot;
-        robotVector[serialNo] = robot;
+    while(robotNum--){
+        int curX, curY, curDir;
+        char initDir;
+        cin>>curY>>curX>>initDir;
+        curY -= 1;
+        curX = MAX_ROW - curX;
+        curDir = dirToInt(initDir);
+        map[curX][curY].first = serialNo;
+        map[curX][curY].second = curDir;
         serialNo++;
     }
     
     while(cmdNum--){
-        int robotNo, runNum;
+        int robotNo, cmdTime;
         char cmd;
-        cin>>robotNo>>cmd>>runNum;
-        Robot* robot = robotVector[robotNo];
-
+        cin>>robotNo>>cmd>>cmdTime;
+        int targetI = 0, targetJ = 0;
+        bool isBroken = false;
+        for(int i = 0 ; i < MAX_ROW ; i++){
+            for(int j = 0 ; j < MAX_COL ; j++){
+                if(map[i][j].first == robotNo){
+                    targetI = i;
+                    targetJ = j;
+                    isBroken = true;
+                    break;
+                }
+            }
+            if(isBroken)
+                break;
+        }
         
-        while(runNum--){
+        for(int i = 0 ; i < cmdTime ; i++){
             if(cmd == 'L'){
-
-                rotateLeft(robot);
-            }else if(cmd == 'R'){
-//                int x = robot.getCurX();
-//                int y = robot.getCurY();
-                rotateRight(robot);
-            }else if(cmd == 'F'){
-                int x = robot->getCurX();
-                int y = robot->getCurY();
-                int newX = x + direction.at(robot->getCurDir()).first;
-                int newY = y + direction.at(robot->getCurDir()).second;
-                if(newX >= 0 && newX < row && newY >= 0 && newY < col){
-                    if(space[newX][newY]->getRobotNo()){
-                        robot->setCurX(newX);
-                        robot->setCurY(newY);
-                        space[newX][newY] = robot;
-                        space[x][y] = NULL;
-                    }else{
-                        cout<<"Robot " << robot->getRobotNo()<<" crashes into robot "<<space[newX][newY]->getRobotNo()<<endl;
+                map[targetI][targetJ].second = turnLeft(map[targetI][targetJ].second);
+            } else if(cmd == 'R'){
+                map[targetI][targetJ].second = turnRight(map[targetI][targetJ].second);
+            } else if(cmd == 'F'){
+                int curDir = map[targetI][targetJ].second;
+                int newI = targetI + direction[curDir].first;
+                int newJ = targetJ + direction[curDir].second;
+                if(newI >= 0 && newI < MAX_ROW && newJ >= 0 && newJ < MAX_COL){
+                    if(map[newI][newJ].first != 0){
+                        cout<< "Robot " << map[targetI][targetJ].first << " crashes into robot " <<map[newI][newJ].first<<endl;
                         return 0;
+                    }else{
+                        map[newI][newJ].first = map[targetI][targetJ].first;
+                        map[newI][newJ].second = map[targetI][targetJ].second;
+                        map[targetI][targetJ].first = 0;
+                        map[targetI][targetJ].second = -1;
+                        targetI = newI;
+                        targetJ = newJ;
                     }
                 }else{
-                    cout<<"Robot "<<robot->getRobotNo()<<" crashes into the wall"<<endl;
+                    cout<<"Robot "<< map[targetI][targetJ].first <<" crashes into the wall "<<endl;
                     return 0;
                 }
             }
         }
-        
     }
-    
     
     cout<<"OK"<<endl;
-    
-    return 0;
 }
 
-int dirToInt(char dir){
-    if(dir == 'N'){
+int turnLeft(int curDir){
+    if(curDir == 3)
         return 0;
-    }else if(dir == 'W'){
-        return 1;
-    }else if(dir == 'S'){
-        return 2;
-    }else{
+    else
+        return ++curDir;
+}
+
+int turnRight(int curDir){
+    if(curDir == 0)
         return 3;
+    else
+        return --curDir;
+}
+
+int dirToInt(char initDir){
+    switch (initDir) {
+        case 'N':
+            return 0;
+        case 'W':
+            return 1;
+        case 'S':
+            return 2;
+        case 'E':
+            return 3;
     }
+    
+    return -1;
 }
-
-void rotateLeft(Robot* robot){
-    robot->setCurDir((robot->getCurDir() + 1) % 4);
-}
-
-void rotateRight(Robot* robot){
-    if(robot->getCurDir() == 0){
-        robot->setCurDir(3);
-    }else{
-        robot->setCurDir((robot->getCurDir() - 1) % 4);
-    }
-}
-
-
