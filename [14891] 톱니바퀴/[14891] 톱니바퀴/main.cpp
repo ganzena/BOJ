@@ -13,8 +13,7 @@
 
 using namespace std;
 
-vector< deque<int> > topni(5);
-vector< vector<int> > initVec(5, vector<int>(8));
+vector< deque<int> > topni(5);// 톱니바퀴 번호 1,2,3,4 각 톱니는 데크로 구성되어있어 앞뒤로 push pop 이 가능
 vector<int> rotation(5);
 void dequeInit();
 void printScore();
@@ -26,12 +25,10 @@ void doRotation();
 int main(int argc, const char * argv[]) {
     
     for(int i = 1 ; i < 5 ; i++){
-        string input;
-        cin>>input;
         for(int j = 0 ; j < 8 ; j++){
-            int temp = input.at(j);
-            temp -= 48;
-            topni.at(i).push_back(temp);
+            int input;
+            scanf("%1d", &input);
+            topni.at(i).push_back(input); //각 deque topni에 푸시해줌
         }
     }
 
@@ -85,24 +82,24 @@ void printScore(){
 void setRotation(int topniNum, int direction){
     int temp = direction;
     rotation[topniNum] = direction;
-    for(int i = topniNum ; i > 1 ; i--){
+    for(int i = topniNum ; i > 1 ; i--){ // 왼쪽에 있는 톱니들
         if(topni.at(i).at(6) != topni.at(i - 1).at(2)){
             if(rotation[i] != 0){
-                rotation[i - 1] = temp * -1;
+                rotation[i - 1] = temp * -1; //반대로 돌아가야함
                 temp *= -1;
             }
         }else{
-            rotation[i - 1] = 0;
+            rotation[i - 1] = 0; //회전안함
         }
     }
     temp = direction;
-    for(int i = topniNum ; i < 4 ; i++){
+    for(int i = topniNum ; i < 4 ; i++){ // 오른쪽에 있는 톱니들
         if(topni.at(i).at(2) != topni.at(i + 1).at(6)){
-            if(rotation[i] != 0){
+            if(rotation[i] != 0){ //N극이 아닐 시(S극일시)
                 rotation[i + 1] = temp * -1;
                 temp *= -1;
             }
-        }else{
+        }else{ //N극일시
             rotation[i + 1] = 0;
         }
     }

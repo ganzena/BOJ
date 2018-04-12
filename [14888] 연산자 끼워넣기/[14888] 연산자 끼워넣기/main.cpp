@@ -9,13 +9,17 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <limits.h>
+
 using namespace std;
+
 vector<int> inputVector;
 vector<int> copied;
 vector<char> math;
+
 int numberNum, add, subtract, multiply, divide;
-int maximum = -1000000000, minimum = 1000000000;
-void Permutation(int);
+int maximum = INT_MIN, minimum = INT_MAX;
+
 int main(int argc, const char * argv[]) {
     
     cin>>numberNum;
@@ -27,54 +31,20 @@ int main(int argc, const char * argv[]) {
     }
     cin>>add>>subtract>>multiply>>divide;
     int cnt = 0;
+    while(multiply--){
+        math[cnt++] = '*';
+    }
     while(add--){
         math[cnt++] = '+';
     }
     while(subtract--){
         math[cnt++] = '-';
     }
-    while(multiply--){
-        math[cnt++] = '*';
-    }
     while(divide--){
         math[cnt++] = '/';
     }
     
-    //    do{
-    //        copied = inputVector;
-    //        for(int i = 0 ; i < copied.size() - 1 ; i++){
-    //            if(math.at(i) == '+'){
-    //                copied[i + 1] = copied[i] + copied[i + 1];
-    //            }else if(math.at(i) == '-'){
-    //                copied[i + 1] = copied[i] - copied[i + 1];
-    //            }else if(math.at(i) == '*'){
-    //                copied[i + 1] = copied[i] * copied[i + 1];
-    //            }else if(math.at(i) == '/'){
-    //                bool negative = false;
-    //                if(copied[i] < 0){
-    //                    copied[i] *= -1;
-    //                    negative = true;
-    //                }
-    //                copied[i + 1] = copied[i] / copied[i + 1];
-    //                if(negative){
-    //                    copied[i + 1] *= -1;
-    //                }
-    //            }
-    //        }
-    //
-    //        int result = copied[copied.size() - 1];
-    //        maximum = max(maximum, result);
-    //        minimum = min(minimum, result);
-    //    }while(next_permutation(math.begin(), math.end()));
-    
-    Permutation(0);
-    cout<<maximum<<endl;
-    cout<<minimum<<endl;
-    return 0;
-}
-
-void Permutation(int depth){
-    if(depth == numberNum - 1){
+    do{
         copied = inputVector;
         for(int i = 0 ; i < copied.size() - 1 ; i++){
             if(math.at(i) == '+'){
@@ -99,12 +69,9 @@ void Permutation(int depth){
         int result = copied[copied.size() - 1];
         maximum = max(maximum, result);
         minimum = min(minimum, result);
-    }
-    for(int i = depth ; i < numberNum - 1 ; i++){
-        swap(math[i], math[depth]);
-        Permutation(depth + 1);
-        swap(math[i], math[depth]);
-    }
+    }while(next_permutation(math.begin(), math.end()));
+    
+    cout<<maximum<<endl;
+    cout<<minimum<<endl;
+    return 0;
 }
-
-

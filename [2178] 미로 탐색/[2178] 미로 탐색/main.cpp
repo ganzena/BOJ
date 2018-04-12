@@ -30,7 +30,6 @@ int main(int argc, const char * argv[]) {
         }
     }
 
-    
     BFS(0, 0);
     cout<<map[endI][endJ]<<endl;
     return 0;

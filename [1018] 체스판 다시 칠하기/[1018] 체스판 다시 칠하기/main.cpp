@@ -40,10 +40,10 @@ int main(int argc, const char * argv[]) {
     
     for(int i = 0 ; i <= row - CHESS_BOARD_SIZE ; i++){
         for(int j = 0 ; j <= col - CHESS_BOARD_SIZE ; j++){
-            cutBoard(i, j);
+            cutBoard(i, j); // 입력받은 판에서 체스판 사이즈로 잘라냄
             int counter = compareBoard();
             if(MIN > counter)
-                MIN = counter;
+                MIN = counter; //최솟값 갱신
         }
     }
     
@@ -51,7 +51,7 @@ int main(int argc, const char * argv[]) {
     return 0;
 }
 
-int compareBoard(){
+int compareBoard(){ // 흰색부터 시작하는 체스판과 검은색부터 시작하는 체스판과의 비교
     int whiteCounter = 0, blackCounter = 0;
     for(int i = 0 ; i < CHESS_BOARD_SIZE ; i++){
         for(int j = 0 ; j < CHESS_BOARD_SIZE ; j++){
@@ -62,7 +62,7 @@ int compareBoard(){
         }
     }
     
-    return (whiteCounter < blackCounter ? whiteCounter : blackCounter);
+    return (whiteCounter < blackCounter ? whiteCounter : blackCounter); // 그 중 더 적은 비용의 counter를 리턴
 }
 
 void cutBoard(int x, int y){
@@ -73,21 +73,21 @@ void cutBoard(int x, int y){
     }
 }
 
-void perpectChessBoard(){
+void perpectChessBoard(){ //완벽한 체스판을 만든다.
     for(int i = 0 ; i < CHESS_BOARD_SIZE ; i++){
         char start, other;
-        if(i % 2 == 0){
+        if(i % 2 == 0){ //i가 0을 포함한 짝수일 경우 시작색은 검은색
             blackBoard[i][0] = BLACK;
             start = BLACK;
             other = WHITE;
-        }else{
+        }else{ //아닐시 시작색은 흰색
             blackBoard[i][0] = WHITE;
             start = WHITE;
             other = BLACK;
         }
         
         for(int j = 0 ; j < CHESS_BOARD_SIZE ; j++){
-            if(j % 2 == 0){
+            if(j % 2 == 0){ // 열에 접근할 때 각각 검흰을 칠함
                 blackBoard[i][j] = start;
             }else{
                 blackBoard[i][j] = other;
@@ -95,7 +95,7 @@ void perpectChessBoard(){
         }
     }
     
-    for(int i = 0 ; i < CHESS_BOARD_SIZE ; i++){
+    for(int i = 0 ; i < CHESS_BOARD_SIZE ; i++){ //마찬가지
         char start, other;
         if(i % 2 == 0){
             whiteBoard[i][0] = WHITE;

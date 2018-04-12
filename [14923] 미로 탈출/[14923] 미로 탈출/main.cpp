@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <limits.h>
 using namespace std;
 
 vector< pair<int, int> > dir = {make_pair(1, 0), make_pair(0, -1), make_pair(-1, 0), make_pair(0, 1)};
@@ -16,7 +17,7 @@ vector< vector<int> > maze;
 vector< vector<int> > copiedMaze;
 queue<pair<int, int>> wallQueue;
 int row, col;
-int startI, startJ, endI, endJ, counter = 99999;
+int startI, startJ, endI, endJ, counter = INT_MAX;
 void BFS(int, int);
 int main(int argc, const char * argv[]) {
     cin>>row>>col;

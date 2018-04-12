@@ -21,7 +21,7 @@ queue<pii> human;
 
 void fireBFS();
 bool humanBFS();
-void print();
+void Print();
 int testNum, row, col, cost = 1;
 bool trap = true, isFire = false;
 
@@ -37,7 +37,7 @@ int main(int argc, const char * argv[]) {
                 if(str.at(j) == '#'){ // 벽
                     building[i][j] = pib(-2, true);
                 }else if(str.at(j) == '*'){ // 불
-                    isFire = true;
+                    isFire = true; //불이 있다를 표시
                     building[i][j] = pib(-1, true);
                     fire.push(pii(i, j));
                 }else if(str.at(j) == '@'){
@@ -46,24 +46,29 @@ int main(int argc, const char * argv[]) {
             }
         }
         while(1){
-            if(isFire)
+            if(isFire) // 불이 있을때만 하기
                 fireBFS();
-            if(humanBFS()){
+            if(humanBFS()){ // 탈출(맵 밖으로 나감)하면 true
                 cout<<cost<<endl;
                 break;
             }
-            if(trap){
+            if(trap){ //탈출을 못 할 경우
                 cout<<"IMPOSSIBLE"<<endl;
                 break;
             }
+            
+            cout<<cost<<endl;
+            Print();
+            cout<<endl;
             trap = true;
             cost++;
         }
+        //변수들 초기화
         trap = true;
         cost = 1;
-        while(!fire.empty())
+        while(!fire.empty()) //큐 초기화
             fire.pop();
-        while(!human.empty())
+        while(!human.empty()) //큐 초기화
             human.pop();
     }
     return 0;
@@ -89,7 +94,7 @@ void fireBFS(){
 
 bool humanBFS(){
     queue<pii> copyHuman;
-    bool out = false;
+    bool out = false; // 탈출 여부
     while(!human.empty()){
         int humanI = human.front().first;
         int humanJ = human.front().second;
@@ -101,16 +106,24 @@ bool humanBFS(){
             if(newI >= 0 && newJ >= 0 && newI < row && newJ < col){
                 if(building[newI][newJ].first == 0 && building[newI][newJ].second == false){ //0은 빈공간
                     building[newI][newJ] = pib(cost, true);
-                    trap = false;
+                    trap = false; // 움직였다면 탈출 가능성이 있으므로 꺼준다.
                     copyHuman.push(pii(newI, newJ));
                 }
-            }else{
+            }else{ //맵 밖으로 나가면 탈출
                 out = true;
             }
         }
     }
     
-    human = copyHuman;
+    human = copyHuman; //업데이트된 큐로 바꿔줌
     return out;
+}
+
+void Print(){
+    for(int i = 0 ; i < row ; i++){
+        for(int j = 0 ; j < col ; j++){
+            cout<<building[i][j].first<<'\t';
+        }cout<<endl;
+    }
 }
 

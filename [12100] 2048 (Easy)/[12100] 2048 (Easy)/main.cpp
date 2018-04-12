@@ -33,18 +33,7 @@ int main(int argc, const char * argv[]) {
 
 void move(vector< vector<int> >& board, int depth, bool isMoved){
     
-    if(!isMoved){ // 5번을 가지 못하고 더 이상 변경할 수 없는 경우 return
-        for(int i = 0 ; i < board_size ; i++){
-            for(int j = 0 ; j < board_size ; j++){
-                if(board[i][j] > maximum){
-                    maximum = board[i][j];
-                }
-            }
-        }
-        return;
-    }
-    
-    if(depth == 5){ // 5번을 움직였을때 리턴
+    if(!isMoved || depth == 5){ // 5번을 가지 못하거나 5번을 갔을 때 return
         for(int i = 0 ; i < board_size ; i++){
             for(int j = 0 ; j < board_size ; j++){
                 if(board[i][j] > maximum){

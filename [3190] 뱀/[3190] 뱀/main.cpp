@@ -16,7 +16,7 @@ using namespace std;
 typedef pair<int, char> pic;
 typedef pair<int, int> pii;
 vector<pii> dir = {pii(-1, 0), pii(0, -1), pii(1, 0), pii(0, 1)}; //0 NORTH 1 WEST 2 SOUTH 3 EAST
-vector< vector<pii> > map;
+vector< vector<pii> > map; // first = 뱀 || 사과 || 빈 공간 second = 방향
 vector<char> timeVector(10000, 'S');
 void PrintMap();
 void move(int, int);
@@ -24,8 +24,8 @@ int turnLeft(int);
 int turnRight(int);
 
 int map_size, appleNum, cmdNum, snakeLen = 1, snakeHeadDir = 3, totalSec = 0;
-pii snakeHead(1, 1);
-pii snakeTail(1, 1);
+pii snakeHead(1, 1); // 머리
+pii snakeTail(1, 1); // 꼬리
 int main(int argc, const char * argv[]) {
     cin>>map_size;
     map_size++;
@@ -34,18 +34,18 @@ int main(int argc, const char * argv[]) {
     while(appleNum--){
         int appleI, appleJ;
         cin>>appleI>>appleJ;
-        map[appleI][appleJ].first = 1;
+        map[appleI][appleJ].first = 1; // 사과 표시
     }
     cin>>cmdNum;
     while(cmdNum--){
         int second;
         char dir;
         cin>>second>>dir;
-        timeVector[second] = dir;
+        timeVector[second] = dir; //명령 저장함
     }
-    
+    // 뱀은 2임
     map[1][1].first = 2;
-    map[1][1].second = 3;
+    map[1][1].second = 3; //방향표시
 
     move(1, 1);
     
@@ -74,14 +74,14 @@ void move(int startI, int startJ){
                 snakeTail.first = newTailI; //꼬리의 새로운 위치 지정
                 snakeTail.second = newTailJ; //꼬리의 새로운 위치 지정
             }
-        }else{
+        }else{ //맵 밖으로 나가면 쥬금
             break;
         }
-        if(timeVector[totalSec] == 'L'){
+        if(timeVector[totalSec] == 'L'){ //방향만 바까줌
             int nextDir = turnLeft(snakeHeadDir);
             map[snakeHead.first][snakeHead.second].second = nextDir;
             snakeHeadDir = nextDir;
-        }else if(timeVector[totalSec] == 'D'){
+        }else if(timeVector[totalSec] == 'D'){ //방향만 바까줌
             int nextDir = turnRight(snakeHeadDir);
             map[snakeHead.first][snakeHead.second].second = nextDir;
             snakeHeadDir = nextDir;

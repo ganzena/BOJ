@@ -19,7 +19,6 @@ int num;
 void Combination(int, int);
 
 int main(int argc, const char * argv[]) {
-    stack<int> deniedStack;
     while(cin>>num&&num){ // 0 입력 받을 때까지 계속하기
         for(int i = 0 ; i < num ; i++){
             cin>>lotto[i];

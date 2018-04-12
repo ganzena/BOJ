@@ -16,7 +16,7 @@ vector<int> command;
 vector< vector<int> > map;
 
 vector<int> dice(7, 0);
-vector<int> nextDice(7, 0);
+vector<int> nextDice(7, 0); //바꿔치기할 주사위
 
 int row, col, startI, startJ, commandNum;
 void move();
@@ -40,7 +40,7 @@ int main(int argc, const char * argv[]) {
     return 0;
 }
 
-void move(){
+void move(){ //핵심은 주사위는 그대로 둔 채 각 면의 값을 바꾸는 것!
     for(int i = 0 ; i < commandNum ; i++){
         int nextDir = command[i];
         int nextI = startI + dir.at(nextDir).first;
@@ -68,14 +68,14 @@ void move(){
                 nextDice[5] = dice[1];
                 nextDice[6] = dice[5];
             }
-            if(map[nextI][nextJ] == 0){
+            if(map[nextI][nextJ] == 0){ //지도에 있는 해당 칸의 0이면 맞닿은 주사위의 값이 복사됨
                 map[nextI][nextJ] = nextDice[6];
-            }else{
+            }else{ // 아니라면 지도에 있는 해당 칸의 값이 주사위에 복사되고, 해당 칸은 0이됨
                 nextDice[6] = map[nextI][nextJ];
                 map[nextI][nextJ] = 0;
             }
             cout<<nextDice[1]<<endl;
-            dice = nextDice;
+            dice = nextDice; // 업데이트된 주사위로 바꿔준다
             startI = nextI;
             startJ = nextJ;
         }

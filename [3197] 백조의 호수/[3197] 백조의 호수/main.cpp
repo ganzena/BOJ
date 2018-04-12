@@ -46,27 +46,27 @@ int main(int argc, const char * argv[]) {
             }
         }
     }
-    swanInit();
+    swanInit(); //백조 위치 설정
 
     while(1){
         if(water.empty())
             break;
         dayCounter++;
-        countDay();
+        countDay(); //녹는 날 계산
     }
-    dayCounter--;
+    dayCounter--; //최대 + 1까지 계산되므로 -1
 
-    maxMelt = dayCounter;
-    while(minMelt <= maxMelt){
+    maxMelt = dayCounter; //다 녹는 일수
+    while(minMelt <= maxMelt){ //min값이 max를 넘어가는 순간 탐색끝
         midMelt = (maxMelt + minMelt)/2;
-        initLake = lake;
-        lakeSet(midMelt);
-        if(BFS()){ //true면
+        initLake = lake; // 녹기전의 빙산 상태를 기억함
+        lakeSet(midMelt); //중간 날이 되었을 때까지 녹았을 얼음들을 녹인다.
+        if(BFS()){ //만날 수 있다면 이전날에 만났을 수 있으므로 max값을 수정한다.
             maxMelt = midMelt - 1;
-        }else{
+        }else{ //못 만났다면 이후에 만났을 것이므로 min값을 수정한다.
             minMelt = midMelt + 1;
         }
-        lake = initLake;
+        lake = initLake; //기억해놨던 빙산상태로 복구
     }
     result = minMelt;
     cout<<result<<endl;
@@ -93,7 +93,7 @@ bool BFS(){
         int initJ = swanMove.front().second;
         swanMove.pop();
         if(initI == endI && initJ == endJ)
-            return true;
+            return true; //만날 수 있는 경우 true 리턴
         for(int i = 0 ; i < 4 ; i++){
             int newI = initI + dir.at(i).first;
             int newJ = initJ + dir.at(i).second;
@@ -103,7 +103,7 @@ bool BFS(){
             }
         }
     }
-    return false;
+    return false; //중간에 안 끝났으면 못 만났음
 }
 void countDay(){
     queue<pii> copyWater;
@@ -115,7 +115,7 @@ void countDay(){
             int newI = waterI + dir.at(j).first;
             int newJ = waterJ + dir.at(j).second;
             if(newI >= 0 && newJ >= 0 && newI < row && newJ < col && lake[newI][newJ].first == -1){
-                    lake[newI][newJ].first = dayCounter;
+                lake[newI][newJ].first = dayCounter; //물 주위의 얼음에 녹을 날을 표시한다.
                 copyWater.push(pii(newI, newJ));
             }
         }

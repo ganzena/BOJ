@@ -102,6 +102,6 @@ void search(int startI, int startJ, int depth){
         }
     }
     
-    visited[startI][startJ] = false;
+    visited[startI][startJ] = false; // 다음 회차에서 탐색 가능하도록 false로 바꿈
 }
 

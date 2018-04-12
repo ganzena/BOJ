@@ -82,9 +82,9 @@ void BFS(vector< vector<int> > &space){
                 }
             }
         }
-        if(lastX == x && lastY == y){
-            if(!maturedQueue.empty()){
-                lastX = maturedQueue.back().first;
+        if(lastX == x && lastY == y){ // lastX, lastY는 큐의 맨 마지막에 있던 좌표(하루가 지났음을 알려줌)
+            if(!maturedQueue.empty()){ // 이 때 큐가 비어있지 않다는건 새로 익은 토마토들이 있다는 것
+                lastX = maturedQueue.back().first; //lastX lastY 새롭게 설정
                 lastY = maturedQueue.back().second;
                 DAY++;
             }

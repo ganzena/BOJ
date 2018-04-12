@@ -29,7 +29,6 @@ int main(int argc, const char * argv[]) {
     for(int i = 0 ; i < row ; i++){
         for(int j = 0 ; j < col ; j++){
             cin>>lab[i][j];
-
         }
     }
 
@@ -44,10 +43,10 @@ int main(int argc, const char * argv[]) {
 void buildWall(int depth){
     if(depth == 3){
         infested.assign(row, vector<bool>(col, false));
-        buildCompleted = lab;
+        buildCompleted = lab; //벽이 지어진 연구소를 buildCompleted에 저장
         for(int i = 0 ; i < row ; i++){
             for(int j = 0 ; j < col ; j++){
-                if(lab[i][j] == 2 && infested[i][j] == false){
+                if(lab[i][j] == 2 && infested[i][j] == false){ //연구소에 있는 바이러스에서 퍼져나가기 시작
                     letSpread(i, j);
                 }
             }
@@ -55,7 +54,7 @@ void buildWall(int depth){
         int counter = 0;
         for(int i = 0 ; i < row ; i++){
             for(int j = 0 ; j < col ; j++){
-                if(buildCompleted[i][j] == 0)
+                if(buildCompleted[i][j] == 0) // 바이러스가 안 퍼진 곳을 검사한다.
                     counter++;
             }
         }
@@ -67,16 +66,16 @@ void buildWall(int depth){
     for(int i = 0 ; i < row ; i++){
         for(int j = 0 ; j < col ; j++){
             if(lab[i][j] == 0){
-                lab[i][j] = 1;
+                lab[i][j] = 1; // 벽 세운다
                 buildWall(depth + 1);
-                lab[i][j] = 0;
+                lab[i][j] = 0; // 재귀 끝나면 벽을 허문다
             }
             
         }
     }
 }
 
-void letSpread(int startI, int startJ){
+void letSpread(int startI, int startJ){ //퍼질 곳이 없으면 알아서 멈출것임 BFS로 짰어도 될듯
     buildCompleted[startI][startJ] = 2;
     infested[startI][startJ] = true;
     for(int i = 0 ; i < 4 ; i++){
