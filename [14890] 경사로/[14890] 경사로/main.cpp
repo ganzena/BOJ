@@ -19,6 +19,7 @@ int size, length, counter = 0;
 void Horizontal();
 void Vertical();
 int main(int argc, const char * argv[]) {
+    
     cin>>size>>length;
     map.assign(size, vector<int>(size, 0));
     slope.assign(size, vector<bool>(size, false));

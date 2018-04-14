@@ -19,24 +19,24 @@ struct Micro{
     
 };
 typedef pair<int, int> pii;
-queue<pii> lifeQ;
-vector< vector<Micro> > map;
-vector< vector<Micro> > copyMap;
-vector< vector<Micro> > initMap;
-vector<pii> dir = {pii(-1, 0), pii(1, 0), pii(0, -1), pii(0, 1)};
+queue<pii> lifeQ; //미생물 좌표 들어있는 큐
+vector< vector<Micro> > map; //원본 맵
+vector< vector<Micro> > copyMap; //원본맵에서 이동해올거임
+vector< vector<Micro> > initMap; //미생물 하나도 없는 맵
+vector<pii> dir = {pii(-1, 0), pii(1, 0), pii(0, -1), pii(0, 1)}; // 동서남북
 int test, cellSize, timeLimit, groupNum, counter = 0;
 
-void init();
-void move();
-void count();
+void init(); //초기화
+void move(); //움직임
+void count(); //미생물 수 세기
 void print();
-int reverseDir(int);
+int reverseDir(int); //반대 방향으로 바꾸기
 int main(int argc, const char * argv[]) {
     int cnt = 0;
     cin>>test;
     while(cnt < test){
-        init();
-        while(timeLimit--){
+        init(); //초기화
+        while(timeLimit--){ //격리 시간만큼 움직임
             move();
         }
         count();
@@ -46,7 +46,7 @@ int main(int argc, const char * argv[]) {
     return 0;
 }
 void move(){
-    queue<pii> copyQ;
+    queue<pii> copyQ; // 원래 있는 미생물 큐에서 움직일때마다 카피큐로 들어감
     while(!lifeQ.empty()){
         int i = lifeQ.front().first;
         int j = lifeQ.front().second;
@@ -54,36 +54,37 @@ void move(){
         int newI = i + dir.at(curDir).first;
         int newJ = j + dir.at(curDir).second;
         lifeQ.pop();
-        if(newI >= 0 && newJ >= 0 && newI < cellSize && newJ < cellSize){
+        if(newI >= 0 && newJ >= 0 && newI < cellSize && newJ < cellSize){ //맵 안쪽에 들어왔을때
             if(newI == 0 || newI == cellSize - 1 || newJ == 0 || newJ == cellSize - 1){// 약품이 있는 경우
                 copyMap[newI][newJ].num = map[i][j].num / 2;// 미생물 수가 반으로 줄고
                 copyMap[newI][newJ].dir = reverseDir(map[i][j].dir); //방향이 반대로 바뀐다.
-                copyMap[newI][newJ].maximum = copyMap[newI][newJ].num;
+                copyMap[newI][newJ].maximum = copyMap[newI][newJ].num; //현재 들어온 최대 미생물은 그대로
                 if(copyMap[newI][newJ].num == 0)
                     continue;
             }else{//약품이 없는 경우
                 if(copyMap[newI][newJ].num != 0){ //이미 미생물이 있는 경우
                     if(copyMap[newI][newJ].maximum < map[i][j].num){ //새로 들어온 미생물 수가 더 많을 때
-                        copyMap[newI][newJ].maximum = map[i][j].num; //유입한 미생물 숫자 최대치 업데이트
+                        copyMap[newI][newJ].maximum = map[i][j].num; //현재 들어온 최대 수의 미생물로 업데이트
                         copyMap[newI][newJ].dir = map[i][j].dir; //방향 변경
                     }
-                    copyMap[newI][newJ].num += map[i][j].num;
+                    copyMap[newI][newJ].num += map[i][j].num; //미생물 수 더해준다
                     continue;
                 }else{ //미생물이 없는 경우
                     copyMap[newI][newJ] = map[i][j];
                 }
             }
         }
-        copyQ.push(pii(newI, newJ));
+        copyQ.push(pii(newI, newJ)); // 미생물이 움직인 좌표를 카피큐에 넣어줌
     }
+    
     for(int i = 0 ; i < cellSize ; i++){
         for(int j = 0 ; j < cellSize ; j++){
-            copyMap[i][j].maximum = copyMap[i][j].num;
+            copyMap[i][j].maximum = copyMap[i][j].num; //움직임이 끝났으므로 이 순간 최대로 들어왔던 미생물 수를 현재 미생물 수로 업데이트
         }
     }
-    lifeQ = copyQ;
-    map = copyMap;
-    copyMap = initMap;
+    lifeQ = copyQ; //다음 큐로 복사
+    map = copyMap; //움직인 맵으로 업데이트
+    copyMap = initMap; //미생물이 없는 빈 맵으로 업데이트
 }
 
 void count(){
@@ -112,14 +113,14 @@ void init(){//맵 초기화
     map.assign(cellSize, vector<Micro>(cellSize, {0,-1,0}));
     copyMap = map;
     initMap = map;
-    while(!lifeQ.empty())
+    while(!lifeQ.empty()) //미생물큐 비워줌
         lifeQ.pop();
-    while(groupNum--){
-        int i, j, microNum, curDir;
+    while(groupNum--){ //미생물 수 받아줌
+        int i, j, microNum, curDir; //좌표, 좌표, 미생물 수 , 현재방향
         cin>>i>>j>>microNum>>curDir;
         curDir--;
-        map[i][j] = {microNum, curDir, microNum};
-        lifeQ.push(pii(i, j));
+        map[i][j] = {microNum, curDir, microNum}; //맵에 미생물 정보 박아줌
+        lifeQ.push(pii(i, j)); //미생물이니까 미생물 큐에 넣어줌
     }
-    counter = 0;
+    counter = 0; //카운터 초기화
 }
