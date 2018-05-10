@@ -1,11 +1,3 @@
-//
-//  main.cpp
-//  [10828] 스택
-//
-//  Created by YOO TAEWOOK on 2018. 1. 17..
-//  Copyright © 2018년 YooTae-Ook. All rights reserved.
-//
-
 #include <iostream>
 #include <string>
 
