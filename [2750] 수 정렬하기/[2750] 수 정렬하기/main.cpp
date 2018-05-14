@@ -17,12 +17,7 @@ int test;
 void BubbleSort();
 void SelectionSort();
 void InsertionSort();
-
-void MergeSort(vector<int> &, int, int);
 void QuickSort(vector<int> &, int, int);
-void HeapSort();
-
-void RadixSort();
 
 void Print();
 int main(int argc, const char * argv[]) {
