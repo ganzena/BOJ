@@ -13,15 +13,39 @@ using namespace std;
 
 typedef long long int type;
 
-int main(int argc, const char * argv[]) {
-    type input;
-    cin>>input;
-    vector<type> vector = {0,1,1};
 
-    for(int i = 3 ; i <= input ; i++){
-        vector.push_back(vector.at(i - 1) + vector.at(i - 2));
+void DP();
+int Recursion(int);
+type num;
+int main(int argc, const char * argv[]) {
+    
+   
+    cin>>num;
+    DP();
+    //cout<<Recursion(num)<<endl;
+    
+    
+
+    return 0;
+}
+
+int Recursion(int input){
+    if(input == 0)
+        return 0;
+    if(input == 1)
+        return 1;
+    
+    return Recursion(input - 1) + Recursion(input - 2);
+}
+
+void DP(){
+    int* fibo = new int[num + 1];
+    fibo[0] = 0;
+    fibo[1] = 1;
+    
+    for(int i = 2 ; i <= num ; i++){
+        fibo[i] = fibo[i - 1] + fibo[i - 2];
     }
     
-    cout<<vector.at(input)<<endl;
-    return 0;
+    cout<<fibo[num]<<endl;
 }

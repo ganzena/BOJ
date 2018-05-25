@@ -16,6 +16,7 @@ vector<type> factorial;
 type num;
 void DP();
 type Recursion(type);
+
 int main(int argc, const char * argv[]) {
     cin>>num;
     //DP();
