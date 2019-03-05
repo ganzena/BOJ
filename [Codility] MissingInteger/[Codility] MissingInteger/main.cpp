@@ -57,7 +57,7 @@ int MinusSolution(vector<int> &A){
 
 void QuickSort(vector<int>& v, int left, int right){
     int i = left, j = right;
-    int pivot = v[(left + right) / 2]; //pivot은 중간값 (value < pivot) pivot (value > pivot)
+    int pivot = v[(left + right) / 2];
     int temp;
     while(i < j){
         while(v[i] < pivot) //v[i]가 pivot보다 작지 않을 때까지 반복

@@ -12,32 +12,16 @@
 typedef unsigned long long int type;
 using namespace std;
 
-vector<type> factorial;
-type num;
-void DP();
-type Recursion(type);
 
 int main(int argc, const char * argv[]) {
+    int num, num2;
     cin>>num;
-    //DP();
-    cout<<Recursion(num)<<endl;
+    cin>>num2;
+    cout<<num<<num2<<endl;
     return 0;
 }
 
-void DP(){
-    factorial.assign(num + 1, 0);
-    factorial[0] = 1;
-    for(int i = 1 ; i < factorial.size() ; i++){
-        factorial[i] = factorial[i - 1] * i;
-    }
-    cout<<factorial[num]<<endl;
-}
 
-type Recursion(type num){
-    if(num == 0)
-        return 1;
-    
-    return Recursion(num - 1) * num;
-}
+
 
 
