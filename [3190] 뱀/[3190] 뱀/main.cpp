@@ -9,96 +9,80 @@
 #include <iostream>
 #include <vector>
 #include <queue>
-#define MAP_SIZE 101
 
 using namespace std;
 
-typedef pair<int, char> pic;
-typedef pair<int, int> pii;
-vector<pii> dir = {pii(-1, 0), pii(0, -1), pii(1, 0), pii(0, 1)}; //0 NORTH 1 WEST 2 SOUTH 3 EAST
-vector< vector<pii> > map; // first = 뱀 || 사과 || 빈 공간 second = 방향
-vector<char> timeVector(10000, 'S');
-void PrintMap();
-void move(int, int);
-int turnLeft(int);
-int turnRight(int);
+vector<vector<pair<int, int>>> map;
+vector<pair<int, int>> dir = {make_pair(0, 1), make_pair(1, 0), make_pair(0, -1), make_pair(-1, 0) };
+queue<pair<int, char>> command;
+pair<int, int> head;
+pair<int, int> tail;
+pair<int, int> headChangLoc;
 
-int map_size, appleNum, cmdNum, snakeLen = 1, snakeHeadDir = 3, totalSec = 0;
-pii snakeHead(1, 1); // 머리
-pii snakeTail(1, 1); // 꼬리
+int N, K, L;
+int playTime = 1;
+int headDir = 0;
+
+void init();
+void run();
+void print(int);
 int main(int argc, const char * argv[]) {
-    cin>>map_size;
-    map_size++;
-    cin>>appleNum;
-    map.assign(map_size, vector<pii>(map_size, pii(0, 4)));
-    while(appleNum--){
-        int appleI, appleJ;
-        cin>>appleI>>appleJ;
-        map[appleI][appleJ].first = 1; // 사과 표시
-    }
-    cin>>cmdNum;
-    while(cmdNum--){
-        int second;
-        char dir;
-        cin>>second>>dir;
-        timeVector[second] = dir; //명령 저장함
-    }
-    // 뱀은 2임
-    map[1][1].first = 2;
-    map[1][1].second = 3; //방향표시
-
-    move(1, 1);
-    
-    cout<<totalSec<<endl;
+    init();
+    run();
+    cout<<playTime<<endl;
     return 0;
 }
 
-void move(int startI, int startJ){
-    for(totalSec = 1 ; totalSec < timeVector.size() ; totalSec++){
-        snakeHead.first = snakeHead.first + dir.at(snakeHeadDir).first;
-        snakeHead.second = snakeHead.second + dir.at(snakeHeadDir).second;
-
-        if(snakeHead.first > 0 && snakeHead.first < map_size && snakeHead.second > 0 && snakeHead.second < map_size){ //맵 안에 들어왔을때
-            if(map[snakeHead.first][snakeHead.second].first == 2) // 자기 몸통에 박으면 끝
-                break;
-            if(map[snakeHead.first][snakeHead.second].first == 1){ //사과 있음
-                map[snakeHead.first][snakeHead.second].first = 2; //뱀 머리가 앉음
-                map[snakeHead.first][snakeHead.second].second = snakeHeadDir; //방향 표시
-            }else{ //사과 없음
-                map[snakeHead.first][snakeHead.second].first = 2; //뱀 머리가 앉음
-                map[snakeHead.first][snakeHead.second].second = snakeHeadDir; //방향 표시
-                int newTailI = snakeTail.first + dir.at(map[snakeTail.first][snakeTail.second].second).first; //꼬리의 새로운 위치 지정
-                int newTailJ = snakeTail.second + dir.at(map[snakeTail.first][snakeTail.second].second).second; //꼬리의 새로운 위치 지정
-                map[snakeTail.first][snakeTail.second].first = 0; //예전꼬리 초기화
-                map[snakeTail.first][snakeTail.second].second = 4; //예전꼬리 초기화
-                snakeTail.first = newTailI; //꼬리의 새로운 위치 지정
-                snakeTail.second = newTailJ; //꼬리의 새로운 위치 지정
-            }
-        }else{ //맵 밖으로 나가면 쥬금
+void run(){
+    while(1){
+        pair<int, int> nextHead = make_pair(head.first + dir.at(headDir).first, head.second + dir.at(headDir).second);
+        if(nextHead.first < 0 || nextHead.first >= N || nextHead.second < 0 || nextHead.second >= N || map[nextHead.first][nextHead.second].first == 1)
             break;
+
+        if(map[nextHead.first][nextHead.second].first == 2){
+            map[nextHead.first][nextHead.second].first = 1;
+            map[nextHead.first][nextHead.second].second = headDir;
+            head = nextHead;
+        }else{
+            map[nextHead.first][nextHead.second].first = 1;
+            map[nextHead.first][nextHead.second].second = headDir;
+            head = nextHead;
+            pair<int, int> nowTailDir = dir.at(map[tail.first][tail.second].second);
+            map[tail.first][tail.second] = make_pair(0, -1);
+            tail = make_pair(tail.first + nowTailDir.first, tail.second + nowTailDir.second);
+            map[tail.first][tail.second].first = 1;
         }
-        if(timeVector[totalSec] == 'L'){ //방향만 바까줌
-            int nextDir = turnLeft(snakeHeadDir);
-            map[snakeHead.first][snakeHead.second].second = nextDir;
-            snakeHeadDir = nextDir;
-        }else if(timeVector[totalSec] == 'D'){ //방향만 바까줌
-            int nextDir = turnRight(snakeHeadDir);
-            map[snakeHead.first][snakeHead.second].second = nextDir;
-            snakeHeadDir = nextDir;
+        
+        if(playTime == command.front().first){
+            char cmd = command.front().second;
+            command.pop();
+            int nextDir;
+            if(cmd == 'L'){
+                nextDir = (headDir + 3)%4;
+            }else{
+                nextDir = (headDir + 1)%4;
+            }
+            headDir = nextDir;
+            map[head.first][head.second].second = nextDir;
         }
+        playTime++;
     }
 }
 
-int turnLeft(int curDir){
-    if(curDir == 3)
-        return 0;
-    else
-        return ++curDir;
-}
-
-int turnRight(int curDir){
-    if(curDir == 0)
-        return 3;
-    else
-        return --curDir;
+void init(){
+    cin>>N>>K;
+    map.assign(N, vector<pair<int, int>>(N, make_pair(0, -1)));
+    for(int i = 0 ; i < K ; i++){
+        int r,c;
+        cin>>r>>c;
+        map[--r][--c].first = 2; //2 == apple
+    }
+    cin>>L;
+    for(int i = 0 ; i < L ; i++){
+        pair<int, char> cmd;
+        cin>>cmd.first>>cmd.second;
+        command.push(cmd);
+    }
+    head = tail = make_pair(0, 0);
+    map[0][0] = make_pair(1, 0);
 }

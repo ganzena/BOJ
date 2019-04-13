@@ -10,98 +10,93 @@
 #include <vector>
 
 using namespace std;
-vector<pair<int, int>> direction = {pair<int, int>(1, 0), pair<int, int>(0, 1), pair<int, int>(-1, 0), pair<int, int>(0, -1)}; // NORTH EAST SOUTH WEST
-vector< vector<int> > board;
-vector<int> sumVector(4); // 테트로미노 합을 구하기 위한 합벡터
-vector< vector<bool> > visited;
 
+vector<vector<int>> map;
+vector<vector<bool>> visited;
+
+vector<pair<int, int>> dir = {make_pair(0, 1), make_pair(0, -1), make_pair(1, 0), make_pair(-1, 0)};
+
+int N, M;
 int maximum = 0;
 
-void search(int, int, int);
-void vertical(int, int);
-void horizontal(int, int);
-
-int row, col;
+void init();
+void run();
+void DFS(int, pair<int, int>, int);
+void vertical(pair<int, int>);
+void horizontal(pair<int, int>);
 int main(int argc, const char * argv[]) {
-    
-    cin>>row>>col;
-    board.assign(row, vector<int>(col)); // 종이 초기화
-    for(int i = 0 ; i < row ; i++){
-        for(int j = 0 ; j < col ; j++){
-            cin>>board[i][j];
-        }
-    }
-    visited.assign(row, vector<bool>(col, false));
-    for(int i = 0 ; i < row ; i++){
-        for(int j = 0 ; j < col ; j++){
-            sumVector[0] = board[i][j]; //합벡터.at(0)은 시작점
-            search(i, j, 1); //depth 1부터 시작
-            vertical(i, j); // ㅓ ㅏ 찾기
-            horizontal(i, j); // ㅗ ㅜ 찾기
-        }
-    }
-    
+    init();
+    run();
     cout<<maximum<<endl;
     return 0;
 }
 
-void vertical(int i, int j){
+void run(){
+    visited.assign(N, vector<bool>(M, false));
+
+    for(int i = 0 ; i < N ; i++){
+        for(int j = 0 ; j < M ; j++){
+//            visited.assign(N, vector<bool>(M, false));
+            pair<int, int> start = make_pair(i, j);
+            DFS(0, start, 0);
+            vertical(start);
+            horizontal(start);
+        }
+    }
+}
+
+void vertical(pair<int, int> start){
+    // ㅓ ㅏ
     int left = 0, right = 0;
-    if(i + 2 < row){
-        if(j - 1 >= 0){ // ㅓ
-            left = board[i][j] + board[i + 1][j] + board[i + 2][j] + board[i + 1][j - 1];
-        }
-        if(j + 1 < col){ // ㅏ
-            right = board[i][j] + board[i + 1][j] + board[i + 2][j] + board[i + 1][j + 1];
-        }
+    if(start.first < N - 1 && start.first > 0){ // 가운데가 기준
+        if(start.second > 0)
+            left = map[start.first][start.second] + map[start.first][start.second - 1] + map[start.first + 1][start.second] + map[start.first - 1][start.second];
+        if(start.second < M - 1)
+            right = map[start.first][start.second] + map[start.first][start.second + 1] + map[start.first + 1][start.second] + map[start.first - 1][start.second];
     }
-    
-    int temp = max(left, right);
-    maximum = max(temp, maximum);
+    left = max(left, right);
+    maximum = max(left, maximum);
 }
 
-void horizontal(int i, int j){
+void horizontal(pair<int, int> start){
+    // ㅜ ㅗ
     int up = 0, down = 0;
-    if(j + 2 < col){
-        if(i - 1 >= 0){ // ㅗ
-            up = board[i][j] + board[i][j + 1] + board[i][j + 2] + board[i - 1][j + 1];
-        }
-        
-        if(i + 1 < row){ // ㅜ
-            down = board[i][j] + board[i][j + 1] + board[i][j + 2] + board[i + 1][j + 1];
-        }
+    if(start.second < M - 1 && start.second > 0){
+        if(start.first > 0)
+            up = map[start.first][start.second] + map[start.first - 1][start.second] + map[start.first][start.second - 1] + map[start.first][start.second + 1];
+        if(start.first < N - 1)
+            down = map[start.first][start.second] + map[start.first + 1][start.second] + map[start.first][start.second - 1] + map[start.first][start.second + 1];
     }
-    
-    int temp = max(up, down);
-    maximum = max(temp, maximum);
-    
+    up = max(up, down);
+    maximum = max(up, maximum);
 }
 
-void search(int startI, int startJ, int depth){
-    
+void DFS(int depth, pair<int, int> start, int sum){
     if(depth == 4){
-        int compare = 0;
-        for(int i = 0 ; i < 4 ; i++){
-            compare += sumVector[i];
-        }
-        
-        maximum = max(maximum, compare);
+        maximum = max(maximum , sum);
         return;
     }
-    
-    visited[startI][startJ] = true;
-    
-    for(int k = 0 ; k < 4 ; k++){
-        int neighborI = startI + direction.at(k).first;
-        int neighborJ = startJ + direction.at(k).second;
-        if(neighborI >= 0 && neighborI < row && neighborJ >= 0 && neighborJ < col){
-            if(!visited[neighborI][neighborJ]){
-                sumVector[depth] = board[neighborI][neighborJ];
-                search(neighborI, neighborJ, depth + 1);
-            }
-        }
+    visited[start.first][start.second] = true;
+    for(int i = 0 ; i < 4 ; i++){
+        pair<int, int> next = make_pair(start.first + dir.at(i).first, start.second + dir.at(i).second);
+        if(next.first < 0 || next.first >= N || next.second < 0 || next.second >= M || visited[next.first][next.second])
+            continue;
+        sum += map[next.first][next.second];
+        visited[next.first][next.second] = true;
+        DFS(depth + 1, next, sum);
+        visited[next.first][next.second] = false;
+        sum -= map[next.first][next.second];
     }
-    
-    visited[startI][startJ] = false; // 다음 회차에서 탐색 가능하도록 false로 바꿈
+    visited[start.first][start.second] = false;
+
 }
 
+void init(){
+    cin>>N>>M;
+    map.assign(N, vector<int>(M, 0));
+    for(int i = 0 ; i < N ; i++){
+        for(int j = 0 ; j < M ; j++){
+            cin>>map[i][j];
+        }
+    }
+}

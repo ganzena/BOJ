@@ -13,117 +13,114 @@
 
 using namespace std;
 
-struct CCTV{
+struct CCTV {
+    pair<int, int> loc;
     int type;
-    int x;
-    int y;
 };
-int n, m, input;
-int cctvNum = 0;
-int counter = 100;
-vector<vector<int>> map(8, vector<int>(8, 0)); // 맵
 
-vector<int> cctvRotate = {4, 2, 4, 4, 1}; //타입별 cctv rotate 수
+vector<vector<int>> map;
 vector<CCTV> cctvVector;
+vector<int> rotateNum = {0, 4, 2, 4, 4, 1};
+//    0
+//3       1
+//    2
+int N, M;
+int missArea = 100;
 
-void init(){
-    cin>>n>>m;
-    for(int i = 0 ; i < n ; i++){ //세로
-        for(int j = 0 ; j < m ; j++){ //가로
-            cin>>input;
-            map[i][j] = input;
-            
-            if(input != 0 && input != 6){ //CCTV
-                CCTV cctv;
-                cctv.type = input - 1;
-                cctv.x = j;
-                cctv.y = i;
-                cctvVector.push_back(cctv);
-                cctvNum++;
-            }
+void init();
+void DFS(int);
+void checkMiss();
+void update(int, CCTV);
+
+int main(int argc, const char * argv[]) {
+    init();
+    DFS(0);
+    cout<<missArea<<endl;
+    return 0;
+}
+void checkMiss(){
+    int temp = 0;
+    for(int i = 0 ; i < N ; i++){
+        for(int j = 0 ; j < M ; j++){
+            if(map[i][j] == 0)
+                temp++;
         }
+    }
+    missArea = min(missArea, temp);
+}
+
+void DFS(int depth){
+    if(depth == cctvVector.size()){
+        checkMiss();
+        return;
+    }
+    CCTV now = cctvVector.at(depth);
+    vector<vector<int>> copied;
+    for(int i = 0 ; i < rotateNum.at(now.type) ; i++){
+        copied = map;
+        if(now.type == 1){
+            update(i, now);
+        }else if(now.type == 2){
+            update(i, now);
+            update(i + 2, now);
+        }else if(now.type == 3){
+            update(i, now);
+            update(i + 1, now);
+        }else if(now.type == 4){
+            update(i, now);
+            update(i + 1, now);
+            update(i + 2, now);
+        }else if(now.type == 5){
+            update(i, now);
+            update(i + 1, now);
+            update(i + 2, now);
+            update(i + 3, now);
+        }
+        DFS(depth + 1);
+        map = copied;
     }
 }
 
 void update(int dir, CCTV cctv){
-    dir = (dir % 4);
-    
-    if(dir == 0){ // 동
-        for(int j = cctv.x + 1 ; j < m ; j++){
-            if(map[cctv.y][j] == 6)
-                break;
-            else
-                map[cctv.y][j] = -1;
+    dir = dir % 4;
+    if(dir == 0){ //북
+        for(int i = cctv.loc.first ; i >= 0 ; i--){
+            if(map[i][cctv.loc.second] == 6)
+                return;
+            map[i][cctv.loc.second] = 7;
         }
-    }else if(dir == 1){ // 북
-        for(int i = cctv.y - 1 ; i >= 0 ; i--){
-            if(map[i][cctv.x] == 6)
-                break;
-            else
-                map[i][cctv.x] = -1;
+    }else if(dir == 1){ //동
+        for(int j = cctv.loc.second ; j < M ; j++){
+            if(map[cctv.loc.first][j] == 6)
+                return;
+            map[cctv.loc.first][j] = 7;
         }
-    }else if(dir == 2){ // 서
-        for(int j = cctv.x - 1; j >= 0 ; j--){
-            if(map[cctv.y][j] == 6)
-                break;
-            else
-                map[cctv.y][j] = -1;
+    }else if(dir == 2){ //남
+        for(int i = cctv.loc.first ; i < N ; i++){
+            if(map[i][cctv.loc.second] == 6)
+                return;
+            map[i][cctv.loc.second] = 7;
         }
-    }else if(dir == 3){ // 남
-        for(int i = cctv.y + 1; i < n ; i++){
-            if(map[i][cctv.x] == 6)
-                break;
-            else
-                map[i][cctv.x] = -1;
+    }else if(dir == 3){ //서
+        for(int j = cctv.loc.second ; j >= 0 ; j--){
+            if(map[cctv.loc.first][j] == 6)
+                return;
+            map[cctv.loc.first][j] = 7;
         }
     }
 }
 
-void dfs(int index){
-    if(index == cctvNum){
-        int compare = 0;
-        for(int i = 0 ; i < m ; i++){
-            for(int j = 0 ; j < n ; j++){
-                if(map[j][i] == 0)
-                    compare++;
+
+void init(){
+    cin>>N>>M;
+    map.assign(N, vector<int>(M, 0));
+    for(int i = 0 ; i < N ; i++){
+        for(int j = 0 ; j < M ; j++){
+            cin>>map[i][j];
+            if(map[i][j] != 0 && map[i][j] != 6){
+                cctvVector.push_back({make_pair(i, j), map[i][j]});
             }
         }
-        if(counter > compare)
-            counter = compare;
-        return;
     }
-    
-    int cctvType = cctvVector.at(index).type;
-    vector<vector<int>> copyMap(8, vector<int>(8, 0)); // 백업 맵
-    for(int dir = 0 ; dir < cctvRotate.at(cctvType) ; dir++){
-        copyMap = map;
-        if(cctvType == 0){
-            update(dir, cctvVector.at(index));
-        }else if(cctvType == 1){
-            update(dir, cctvVector.at(index));
-            update(dir + 2, cctvVector.at(index));
-        }else if(cctvType == 2){
-            update(dir, cctvVector.at(index));
-            update(dir + 1, cctvVector.at(index));
-        }else if(cctvType == 3){
-            update(dir, cctvVector.at(index));
-            update(dir + 1, cctvVector.at(index));
-            update(dir + 2, cctvVector.at(index));
-        }else if(cctvType == 4){
-            update(dir, cctvVector.at(index));
-            update(dir + 1, cctvVector.at(index));
-            update(dir + 2, cctvVector.at(index));
-            update(dir + 3, cctvVector.at(index));
-        }
-        dfs(index + 1);
-        map = copyMap;
-    }
-}
-
-int main(int argc, const char * argv[]) {
-    init();
-    dfs(0);
-    cout<<counter<<endl;
-    return 0;
 }
 

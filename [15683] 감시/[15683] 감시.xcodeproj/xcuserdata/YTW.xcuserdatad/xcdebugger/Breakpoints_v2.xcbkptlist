@@ -6,16 +6,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "[15683] &#x1100;&#x1161;&#x11b7;&#x1109;&#x1175;/main.cpp"
-            timestampString = "570301294.010744"
+            timestampString = "576854338.248421"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "126"
-            endingLineNumber = "126"
-            landmarkName = "main(int argc, const char * argv[])"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "DFS(int depth)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
