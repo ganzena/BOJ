@@ -10,13 +10,14 @@
 #include <vector>
 #include <queue>
 #include <algorithm>
+#include <utility>
 
 using namespace std;
 
-vector<vector<int>> map;
-vector<vector<int>> copiedMap;
-vector<pair<int, int>> dir = {make_pair(0, 1), make_pair(0, -1), make_pair(1, 0), make_pair(-1, 0)};
-queue<pair<int, int>> virusQ;
+vector<vector<int> > map;
+vector<vector<int> > copiedMap;
+vector<pair<int, int> > dir;
+queue<pair<int, int> > virusQ;
 int N, M;
 int maximum = 0;
 
@@ -54,8 +55,7 @@ void DFS(int depth, int startI, int startJ){
         for(int j = startJ ; j < M ; j++){
             if(map[i][j] == 0){
                 map[i][j] = 1;
-                //DFS(depth + 1, i, j);
-                DFS(depth + 1, 0, 0);
+                DFS(depth + 1, i, 0);
                 map[i][j] = 0;
             }
         }
@@ -63,7 +63,7 @@ void DFS(int depth, int startI, int startJ){
 }
 
 void BFS(){
-    queue<pair<int, int>> copyQ = virusQ;
+    queue<pair<int, int> > copyQ = virusQ;
     while(!copyQ.empty()){
         pair<int, int> now = copyQ.front();
         copyQ.pop();
@@ -98,4 +98,8 @@ void init(){
                 virusQ.push(make_pair(i, j));
         }
     }
+    dir.push_back(make_pair(0, 1));
+    dir.push_back(make_pair(0, -1));
+    dir.push_back(make_pair(1, 0));
+    dir.push_back(make_pair(-1, 0));
 }

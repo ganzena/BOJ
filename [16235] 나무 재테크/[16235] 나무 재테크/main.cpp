@@ -48,16 +48,23 @@ struct Field{
     vector<int> deads;
 };
 
-int N, M, K; // N : 땅 크기 / M : 나무 갯수 / K : 기준 햇수
+struct pii{
+    int i;
+    int j;
+};
 
-vector<vector<int>> nutrient;
-vector<vector<Field>> map;
-vector<pair<int, int>> dir = {pair<int, int>(0, 1), pair<int, int>(0, -1), pair<int, int>(1, 0), pair<int, int>(-1, 0), pair<int, int>(1, 1), pair<int, int>(-1, 1), pair<int, int>(1, -1), pair<int, int>(-1, -1)};
+int N, M, K; // N : 땅 크기 / M : 나무 갯수 / K : 기준 햇수
+const int first [] = {0, 0, 1, -1, 1, -1, 1, -1};
+const int second [] = {1, -1, 0, 0, 1, 1, -1, -1};
+vector< vector<int> > nutrient;
+vector< vector<Field> > map;
+
 void init();
 void spring();
 void summer();
 void fall();
 void winter();
+
 void print();
 
 int main(int argc, const char * argv[]) {
@@ -115,16 +122,16 @@ void summer(){
 void fall(){
     for(int i = 0 ; i < N ; i++){
         for(int j = 0 ; j < N ; j++){
-            pair<int, int> now = make_pair(i, j);
+            pii now = {i, j};
             for(int k = 0 ; k < map[i][j].trees.size() ; k++){
                 if(map[i][j].trees[k] % 5 != 0)
                     continue;
                 
-                for(int d = 0 ; d < dir.size() ; d++){
-                    pair<int, int> next = make_pair(now.first + dir.at(d).first, now.second + dir.at(d).second);
-                    if(next.first < 0 || next.first >= N || next.second < 0 || next.second >= N)
+                for(int d = 0 ; d < 8 ; d++){
+                    pii next = {now.i + first[d], now.j + second[d]};
+                    if(next.i < 0 || next.i >= N || next.j < 0 || next.j >= N)
                         continue;
-                    map[next.first][next.second].trees.push_back(1);
+                    map[next.i][next.j].trees.push_back(1);
                 }
             }
         }
@@ -152,7 +159,9 @@ void print(){
 void init(){
     cin>>N>>M>>K;
     nutrient.assign(N, vector<int>(N, 0));
-    map.assign(N, vector<Field>(N, Field {5, }));
+    Field temp;
+    temp.curNutrient = 5;
+    map.assign(N, vector<Field>(N, temp));
     
     for(int i = 0 ; i < N ; i++){
         for(int j = 0 ; j < N ; j++){

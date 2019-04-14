@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <algorithm>
 
 using namespace std;
 
@@ -16,12 +17,11 @@ int N, L, R;
 int counter = 0;
 int unitedNum = 0;
 
-vector<vector<int>> map;
-vector<vector<int>> united;
+vector< vector<int> > map;
+vector< vector<int> > united;
 vector<int> unionSum;
 vector<int> unionNum;
-vector<pair<int, int>> dir = {pair<int, int>(0, -1), pair<int, int>(0, 1), pair<int, int>(1, 0), pair<int, int>(-1, 0)};
-
+vector< pair<int, int> > dir ;
 void init();
 void BFS();
 
@@ -41,7 +41,7 @@ void BFS(){
             for(int j = 0 ; j < N ; j++){
                 if(united[i][j] == -1){
                     united[i][j] = unitedNum;
-                    queue<pair<int, int>> q;
+                    queue< pair<int, int> > q;
                     q.push(make_pair(i, j));
                     int sum = map[i][j];
                     unionNum[unitedNum] = 1;
@@ -87,6 +87,7 @@ void BFS(){
 }
 
 void init(){
+    ios_base::sync_with_stdio(false);
     cin>>N>>L>>R;
     map.assign(N, vector<int>(N, 0));
     for(int i = 0 ; i < N ; i++){
@@ -94,4 +95,8 @@ void init(){
             cin>>map[i][j];
         }
     }
+    dir.push_back(make_pair(0, -1));
+    dir.push_back(make_pair(0, 1));
+    dir.push_back(make_pair(1, 0));
+    dir.push_back(make_pair(-1, 0));
 }

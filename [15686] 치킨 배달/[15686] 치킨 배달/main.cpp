@@ -9,13 +9,14 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <stdio.h>
 
 using namespace std;
 
-vector<vector<int>> map;
-vector<pair<int, int>> houseVector;
-vector<pair<int, int>> chickenVector;
-vector<pair<int, int>> tempVector;
+vector< vector<int> > map;
+vector< pair<int, int> > houseVector;
+vector< pair<int, int> > chickenVector;
+vector< pair<int, int> > tempVector;
 vector<int> houseTemp;
 int n, m; // n 맵 크기 m 최대 치킨집 수
 int minLen = 99999;
@@ -30,6 +31,7 @@ int main(int argc, const char * argv[]) {
 }
 
 void init(){
+    ios_base::sync_with_stdio(false);
     cin>>n>>m;
     map.assign(n, vector<int>(n, 0));
     for(int i = 0 ; i < n ; i++){

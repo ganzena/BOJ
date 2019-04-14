@@ -18,9 +18,9 @@ struct CCTV {
     int type;
 };
 
-vector<vector<int>> map;
+vector< vector<int> > map;
 vector<CCTV> cctvVector;
-vector<int> rotateNum = {0, 4, 2, 4, 4, 1};
+vector<int> rotateNum; // = {0, 4, 2, 4, 4, 1};
 //    0
 //3       1
 //    2
@@ -50,12 +50,12 @@ void checkMiss(){
 }
 
 void DFS(int depth){
-    if(depth == cctvVector.size()){
+    if(depth == (int)cctvVector.size()){
         checkMiss();
         return;
     }
     CCTV now = cctvVector.at(depth);
-    vector<vector<int>> copied;
+    vector< vector<int> > copied;
     for(int i = 0 ; i < rotateNum.at(now.type) ; i++){
         copied = map;
         if(now.type == 1){
@@ -112,15 +112,23 @@ void update(int dir, CCTV cctv){
 
 
 void init(){
+    ios_base::sync_with_stdio(false);
     cin>>N>>M;
     map.assign(N, vector<int>(M, 0));
     for(int i = 0 ; i < N ; i++){
         for(int j = 0 ; j < M ; j++){
             cin>>map[i][j];
             if(map[i][j] != 0 && map[i][j] != 6){
-                cctvVector.push_back({make_pair(i, j), map[i][j]});
+                CCTV temp = {make_pair(i, j), map[i][j]};
+                cctvVector.push_back(temp);
             }
         }
     }
+    rotateNum.push_back(0);
+    rotateNum.push_back(4);
+    rotateNum.push_back(2);
+    rotateNum.push_back(4);
+    rotateNum.push_back(4);
+    rotateNum.push_back(1);
 }
 

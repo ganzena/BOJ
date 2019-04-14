@@ -23,7 +23,9 @@ struct Shark{
 typedef pair<int, int> pii;
 vector< vector<int> > map;
 vector< vector<bool> > visited;
-vector< pii > dir = {pii(0, 1), pii(-1, 0), pii(0, -1), pii(1, 0)};
+//vector< pii > dir = {pii(0, 1), pii(-1, 0), pii(0, -1), pii(1, 0)};
+vector< pii > dir;
+
 Shark shark;
 int n;
 int sec = 0;
@@ -37,6 +39,30 @@ int main(int argc, const char * argv[]) {
     BFS();
     cout<<shark.time<<endl;
     return 0;
+}
+
+void init(){
+    cin>>n;
+    map.assign(n, vector<int>(n, 0));
+    for(int i = 0 ; i < n ; i++){
+        for(int j = 0 ; j < n ; j++){
+            cin>>map[i][j];
+            if(map[i][j] == 9){
+//                shark.loc = make_pair(i, j);
+//                shark.size = 2;
+//                shark.exp = 2;
+//                shark.time = 0;
+                shark = {make_pair(i, j), 2, 2, 0};
+                map[i][j] = 0;
+            }
+        }
+    }
+    //dir = {pii(0, 1), pii(-1, 0), pii(0, -1), pii(1, 0)};
+
+    dir.push_back(make_pair(0, 1));
+    dir.push_back(make_pair(-1, 0));
+    dir.push_back(make_pair(0, -1));
+    dir.push_back(make_pair(1, 0));
 }
 
 void BFS(){
@@ -99,16 +125,4 @@ void BFS(){
     }
 }
 
-void init(){
-    cin>>n;
-    map.assign(n, vector<int>(n, 0));
-    for(int i = 0 ; i < n ; i++){
-        for(int j = 0 ; j < n ; j++){
-            cin>>map[i][j];
-            if(map[i][j] == 9){
-                shark = {make_pair(i, j), 2, 2, 0};
-                map[i][j] = 0;
-            }
-        }
-    }
-}
+

@@ -20,9 +20,11 @@ struct DragonCurve{
     int gen;
 };
 
-vector<vector<int>> map(101, vector<int>(101, 0));
+vector< vector<int> > map(101, vector<int>(101, 0));
 vector<DragonCurve> dcV;
-vector<pair<int, int>> dir = {make_pair(0, 1), make_pair(-1, 0), make_pair(0, -1), make_pair(1, 0)};
+//vector< pair<int, int> > dir = {make_pair(0, 1), make_pair(-1, 0), make_pair(0, -1), make_pair(1, 0)};
+vector< pair<int, int> > dir;
+
 
 int N;
 int counter = 0;
@@ -76,6 +78,14 @@ void init(){
     for(int i = 0 ; i < N ; i++){
         int x,y,d,g;
         cin>>y>>x>>d>>g;
-        dcV.push_back({make_pair(x, y), d, g});
+        DragonCurve temp;
+        temp.loc = make_pair(x, y);
+        temp.dir = d;
+        temp.gen = g;
+        dcV.push_back(temp);
     }
+    dir.push_back(make_pair(0, 1));
+    dir.push_back(make_pair(-1, 0));
+    dir.push_back(make_pair(0, -1));
+    dir.push_back(make_pair(1, 0));
 }
