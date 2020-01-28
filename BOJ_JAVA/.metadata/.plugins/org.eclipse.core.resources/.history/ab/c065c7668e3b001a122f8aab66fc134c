@@ -1,0 +1,12 @@
+
+public class Main {
+
+	static String file = "src/input.txt";
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		FileInputStream fis = new FileInputStream(file);
+		System.in(fis);
+	}
+
+}

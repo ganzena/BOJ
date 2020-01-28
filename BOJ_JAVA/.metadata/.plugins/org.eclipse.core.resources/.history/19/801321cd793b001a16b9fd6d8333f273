@@ -1,0 +1,16 @@
+import java.io.FileInputStream;
+
+public class Main {
+
+	static  String INPUT = "src/input.txt";
+	static FileInputStream fis;
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public static inputInit(){
+		
+	}
+
+}

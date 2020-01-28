@@ -1,0 +1,20 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+public class Main {
+
+	static  String INPUT = "src/input.txt";
+	static FileInputStream fis;
+	static BufferedReader br;
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public static void inputInit() throws FileNotFoundException{
+		fis = new FileInputStream(INPUT);
+		br = new BufferedReader(new InputStreamReader(System.in));
+	}
+
+}
