@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "[1526] &#x1100;&#x1161;&#x110c;&#x1161;&#x11bc; &#x110f;&#x1173;&#x11ab; &#x1100;&#x1173;&#x11b7;&#x1106;&#x1175;&#x11ab;&#x1109;&#x116e;/main.cpp"
+            timestampString = "602419857.77091"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "22"
+            endingLineNumber = "22"
+            landmarkName = "main(int argc, const char * argv[])"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "[1526] &#x1100;&#x1161;&#x110c;&#x1161;&#x11bc; &#x110f;&#x1173;&#x11ab; &#x1100;&#x1173;&#x11b7;&#x1106;&#x1175;&#x11ab;&#x1109;&#x116e;/main.cpp"
+            timestampString = "602419857.771276"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "main(int argc, const char * argv[])"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "[1526] &#x1100;&#x1161;&#x110c;&#x1161;&#x11bc; &#x110f;&#x1173;&#x11ab; &#x1100;&#x1173;&#x11b7;&#x1106;&#x1175;&#x11ab;&#x1109;&#x116e;/main.cpp"
+            timestampString = "602419857.7714961"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "solve(int num)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
