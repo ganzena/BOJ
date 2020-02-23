@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "22A36A0723F430830036B65C"
-               BuildableName = "[2668] &#x1109;&#x116e;&#x11ba;&#x110c;&#x1161;&#x1100;&#x1169;&#x1105;&#x1173;&#x1100;&#x1175;"
-               BlueprintName = "[2668] &#x1109;&#x116e;&#x11ba;&#x110c;&#x1161;&#x1100;&#x1169;&#x1105;&#x1173;&#x1100;&#x1175;"
-               ReferencedContainer = "container:[2668] &#x1109;&#x116e;&#x11ba;&#x110c;&#x1161;&#x1100;&#x1169;&#x1105;&#x1173;&#x1100;&#x1175;.xcodeproj">
+               BlueprintIdentifier = "22C0E67822351E2F004B1946"
+               BuildableName = "[1012] &#x110b;&#x1172;&#x1100;&#x1175;&#x1102;&#x1169;&#x11bc; &#x1107;&#x1162;&#x110e;&#x116e;"
+               BlueprintName = "[1012] &#x110b;&#x1172;&#x1100;&#x1175;&#x1102;&#x1169;&#x11bc; &#x1107;&#x1162;&#x110e;&#x116e;"
+               ReferencedContainer = "container:[1012] &#x110b;&#x1172;&#x1100;&#x1175;&#x1102;&#x1169;&#x11bc; &#x1107;&#x1162;&#x110e;&#x116e;.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,10 +32,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "22A36A0723F430830036B65C"
-            BuildableName = "[2668] &#x1109;&#x116e;&#x11ba;&#x110c;&#x1161;&#x1100;&#x1169;&#x1105;&#x1173;&#x1100;&#x1175;"
-            BlueprintName = "[2668] &#x1109;&#x116e;&#x11ba;&#x110c;&#x1161;&#x1100;&#x1169;&#x1105;&#x1173;&#x1100;&#x1175;"
-            ReferencedContainer = "container:[2668] &#x1109;&#x116e;&#x11ba;&#x110c;&#x1161;&#x1100;&#x1169;&#x1105;&#x1173;&#x1100;&#x1175;.xcodeproj">
+            BlueprintIdentifier = "22C0E67822351E2F004B1946"
+            BuildableName = "[1012] &#x110b;&#x1172;&#x1100;&#x1175;&#x1102;&#x1169;&#x11bc; &#x1107;&#x1162;&#x110e;&#x116e;"
+            BlueprintName = "[1012] &#x110b;&#x1172;&#x1100;&#x1175;&#x1102;&#x1169;&#x11bc; &#x1107;&#x1162;&#x110e;&#x116e;"
+            ReferencedContainer = "container:[1012] &#x110b;&#x1172;&#x1100;&#x1175;&#x1102;&#x1169;&#x11bc; &#x1107;&#x1162;&#x110e;&#x116e;.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -47,7 +47,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/YTW/BOJ/[2668] &#x1109;&#x116e;&#x11ba;&#x110c;&#x1161;&#x1100;&#x1169;&#x1105;&#x1173;&#x1100;&#x1175;/[2668] &#x1109;&#x116e;&#x11ba;&#x110c;&#x1161;&#x1100;&#x1169;&#x1105;&#x1173;&#x1100;&#x1175;"
+      customWorkingDirectory = "/Users/YTW/BOJ/[1012] &#x110b;&#x1172;&#x1100;&#x1175;&#x1102;&#x1169;&#x11bc; &#x1107;&#x1162;&#x110e;&#x116e;/[1012] &#x110b;&#x1172;&#x1100;&#x1175;&#x1102;&#x1169;&#x11bc; &#x1107;&#x1162;&#x110e;&#x116e;"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
@@ -56,10 +56,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "22A36A0723F430830036B65C"
-            BuildableName = "[2668] &#x1109;&#x116e;&#x11ba;&#x110c;&#x1161;&#x1100;&#x1169;&#x1105;&#x1173;&#x1100;&#x1175;"
-            BlueprintName = "[2668] &#x1109;&#x116e;&#x11ba;&#x110c;&#x1161;&#x1100;&#x1169;&#x1105;&#x1173;&#x1100;&#x1175;"
-            ReferencedContainer = "container:[2668] &#x1109;&#x116e;&#x11ba;&#x110c;&#x1161;&#x1100;&#x1169;&#x1105;&#x1173;&#x1100;&#x1175;.xcodeproj">
+            BlueprintIdentifier = "22C0E67822351E2F004B1946"
+            BuildableName = "[1012] &#x110b;&#x1172;&#x1100;&#x1175;&#x1102;&#x1169;&#x11bc; &#x1107;&#x1162;&#x110e;&#x116e;"
+            BlueprintName = "[1012] &#x110b;&#x1172;&#x1100;&#x1175;&#x1102;&#x1169;&#x11bc; &#x1107;&#x1162;&#x110e;&#x116e;"
+            ReferencedContainer = "container:[1012] &#x110b;&#x1172;&#x1100;&#x1175;&#x1102;&#x1169;&#x11bc; &#x1107;&#x1162;&#x110e;&#x116e;.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -75,10 +75,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "22A36A0723F430830036B65C"
-            BuildableName = "[2668] &#x1109;&#x116e;&#x11ba;&#x110c;&#x1161;&#x1100;&#x1169;&#x1105;&#x1173;&#x1100;&#x1175;"
-            BlueprintName = "[2668] &#x1109;&#x116e;&#x11ba;&#x110c;&#x1161;&#x1100;&#x1169;&#x1105;&#x1173;&#x1100;&#x1175;"
-            ReferencedContainer = "container:[2668] &#x1109;&#x116e;&#x11ba;&#x110c;&#x1161;&#x1100;&#x1169;&#x1105;&#x1173;&#x1100;&#x1175;.xcodeproj">
+            BlueprintIdentifier = "22C0E67822351E2F004B1946"
+            BuildableName = "[1012] &#x110b;&#x1172;&#x1100;&#x1175;&#x1102;&#x1169;&#x11bc; &#x1107;&#x1162;&#x110e;&#x116e;"
+            BlueprintName = "[1012] &#x110b;&#x1172;&#x1100;&#x1175;&#x1102;&#x1169;&#x11bc; &#x1107;&#x1162;&#x110e;&#x116e;"
+            ReferencedContainer = "container:[1012] &#x110b;&#x1172;&#x1100;&#x1175;&#x1102;&#x1169;&#x11bc; &#x1107;&#x1162;&#x110e;&#x116e;.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

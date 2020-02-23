@@ -12,24 +12,18 @@
 
 using namespace std;
 
-struct Info{
-    pair<int, int> loc;
-    int time;
-};
+char map [1001][1001];
+int visit[1001][1001] = {0, }; //불 방문은 2 지훈 방문은 1
 
-char map[1000][1000];
-int visit[1000][1000] = {0, }; //지훈이가 갔으면 1 불이 갔으면 2
-queue<Info> jQ;
-queue<Info> fQ;
+queue<pair<int, int> > jihoonQ;
+queue<pair<int, int> > fireQ;
 vector<pair<int, int> > dir;
-
-int R, C;
 
 void init();
 void solve();
-bool jihoon(int);
-void fire(int);
+void print();
 
+int R, C;
 
 int main(int argc, const char * argv[]) {
     init();
@@ -37,85 +31,49 @@ int main(int argc, const char * argv[]) {
     return 0;
 }
 
-void print(){
-    for(int i = 0 ; i < R ; i++){
-        for(int j = 0 ; j < C ; j++){
-            cout<<visit[i][j]<<" ";
-        }cout<<endl;
-    }cout<<endl;
-}
-
-bool jihoon(int time){
-    while(!jQ.empty()){
-        Info nowJ = jQ.front();
-        
-        if(nowJ.time != time) //현재 시간이랑 다르면 진행안함
-            break;
-        if(visit[nowJ.loc.first][nowJ.loc.second] == 2){ //현재 visit이 2로 된건 불이 닿았다는것
-            jQ.pop(); //해당위치는 쓸모없게되었으므로 제거
-            if(jQ.empty()){ //이 위치 빼곤 없었을 경우 탈출 실패
-                cout<<"IMPOSSIBLE"<<endl;
-                return false;
-            }
-            continue;
-        }
-        
-        jQ.pop();
-        visit[nowJ.loc.first][nowJ.loc.second] = 1;
-        for(int i = 0 ; i < 4 ; i++){
-            int xx = nowJ.loc.first + dir.at(i).first;
-            int yy = nowJ.loc.second + dir.at(i).second;
-            if( visit[xx][yy] != 0 || map[xx][yy] == '#'){
-                continue;
-            }
-            
-            if(xx < 0 || xx >= R || yy < 0 || yy >= C){ //만약에 탈출에 성공했다면
-                cout<<nowJ.time + 1<<endl; //현재 시간에 +1
-                return true;
-            }
-            
-            visit[xx][yy] = 1; //방문한 곳에 1표시
-            jQ.push({make_pair(xx, yy), nowJ.time + 1}); //다음 위치 표시
-        }
-//        cout<<"JIHOON TURN"<<endl;
-//        print();
-    }
-    return false;
-}
-
-void fire(int time){
-    while(!fQ.empty()){
-        Info nowF = fQ.front();
-        if(nowF.time != time){ //현재 시간이랑 다르면 진행 안함
-            break;
-        }
-        fQ.pop();
-        visit[nowF.loc.first][nowF.loc.second] = 2;
-        for(int i = 0 ; i < 4 ; i++){
-            int xx = nowF.loc.first + dir.at(i).first;
-            int yy = nowF.loc.second + dir.at(i).second;
-            if(xx < 0 || xx >= R || yy < 0 || yy >= C || visit[xx][yy] == 2 || map[xx][yy] == '#'){
-                continue;
-            }
-            
-            visit[xx][yy] = 2;
-            //cout<<nowF.time<<endl;
-            fQ.push({make_pair(xx, yy), nowF.time + 1});
-        }
-    }
-//    cout<<"FIRE TURN"<<endl;
-//    print();
-}
-
 void solve(){
-    int time = 0;
-    while(1){
-//        cout<<time<<"번째"<<endl;
-        if(jihoon(time))
-            break;
-        fire(time);
-        time++;
+    int time = 0; // 탈출하느네 걸리는 시간
+    while(!jihoonQ.empty()){ //지훈이 큐가 비어버릴 경우 탈출 못하는 거임
+        int fSize = (int)fireQ.size(); // 현재 들어있는 불의 사이즈
+        for(int i = 0 ; i < fSize ; i++){ // 현재 불 사이즈 만큼만 BFS 진행
+            pair<int, int> now = fireQ.front();
+            fireQ.pop();
+            visit[now.first][now.second] = 2;
+            for(int j = 0 ; j < 4 ; j++){
+                pair<int, int> next = make_pair(now.first + dir.at(j).first, now.second + dir.at(j).second);
+                if(next.first >= R || next.first < 0 || next.second >= C || next.second < 0 || visit[next.first][next.second] == 2 || map[next.first][next.second] == '#'){
+                    continue;
+                }
+                
+                visit[next.first][next.second] = 2; //불의 방문은 2로
+                fireQ.push(next);
+            }
+        }
+
+        int jSize = (int)jihoonQ.size();
+        for(int i = 0 ; i < jSize ; i++){ //현재 들어있는 지훈의 사이즈만큼만 진행
+            pair<int, int> now = jihoonQ.front();
+            jihoonQ.pop();
+            visit[now.first][now.second] = 1;
+            if(now.first >= R || now.first < 0 || now.second >= C || now.second < 0){ //만약 배열 바깥이라면 탈출한거임
+                cout<<time<<endl; //현재시간 출력
+                return;
+            }
+            for(int j = 0 ; j < 4 ; j++){
+                pair<int, int> next = make_pair(now.first + dir.at(j).first, now.second + dir.at(j).second);
+                if( visit[next.first][next.second] != 0 || map[next.first][next.second] == '#'){
+                    continue; // visit이 0인곳만 통과 가능(이미 지훈이나 불이 방문한 경우는 안감)
+                }
+                
+                visit[next.first][next.second] = 1; //visit을 1로 만듦
+                jihoonQ.push(next);
+            }
+        }
+        time++; //큐가 다 돌면 time++;
     }
+   
+    cout<<"IMPOSSIBLE"<<endl; //지훈이 큐가 비어버려서 나온 것이므로 불가능 출력
+    return;
 }
 
 void init(){
@@ -124,12 +82,10 @@ void init(){
     for(int i = 0 ; i < R ; i++){
         for(int j = 0 ; j < C ; j++){
             cin>>map[i][j];
-            if(map[i][j] == 'J'){
-                jQ.push({make_pair(i, j), 0});
-                visit[i][j] = 1;
-            }else if(map[i][j] == 'F'){
-                fQ.push({make_pair(i, j), 0});
-                visit[i][j] = 2;
+            if(map[i][j] == 'F'){
+                fireQ.push(make_pair(i, j));
+            }else if(map[i][j] == 'J'){
+                jihoonQ.push(make_pair(i, j));
             }
         }
     }
@@ -139,3 +95,5 @@ void init(){
     dir.push_back(make_pair(1, 0));
     dir.push_back(make_pair(-1, 0));
 }
+
+

@@ -12,60 +12,68 @@
 
 using namespace std;
 
-vector<vector<int>> map;
-vector<vector<bool>> visited;
-vector<pair<int, int>> dir = {pair<int, int>(0, 1), pair<int, int>(0, -1), pair<int, int>(1, 0), pair<int, int>(-1, 0)};
-int tcNum;
-int M, N, K;
+vector<vector<int> > map;
+vector<vector<bool> > visit;
+vector<pair<int, int> > dir;
+queue<pair<int, int> > q;
 
 void init();
-int BFS();
+void solve(pair<int, int>);
+
+int tc, N, M, B;
+int worm;
 
 int main(int argc, const char * argv[]) {
-    cin>>tcNum;
-    for(int i = 0 ; i < tcNum ; i++){
+    freopen("input.txt","r",stdin);
+    cin>>tc;
+    while(tc-- > 0){
         init();
-        cout<<BFS()<<endl;
-    }
-    return 0;
-}
-
-int BFS(){
-    int count = 0;
-    for(int i = 0 ; i < N ; i++){
-        for(int j = 0 ; j < M ; j++){
-            if(map[i][j] == 1 && visited[i][j] == false){
-                queue<pair<int, int>> q;
-                q.push(pair<int, int>(i, j));
-                visited[i][j] = true;
-                while(!q.empty()){
-                    pair<int, int> now = q.front();
-                    q.pop();
-                    for(int i = 0 ; i < 4 ; i++){
-                        pair<int, int> next = make_pair(now.first + dir.at(i).first, now.second + dir.at(i).second);
-                        if(next.first < 0 || next.first >= N || next.second < 0 || next.second >= M){
-                            continue;
-                        }
-                        if(map[next.first][next.second] == 1 & visited[next.first][next.second] == false){
-                            visited[next.first][next.second] = true;
-                            q.push(next);
-                        }
-                    }
-                }
-                count++;
-            }
+        while(!q.empty()){ //붙어있는 배추 무리를 센다
+            pair<int, int> now = q.front();
+            q.pop();
+            if(visit[now.first][now.second]) //이미 방문되었던 배추이므로 제외한다
+                continue;
+            solve(now);
+            worm++; //한 무리가 찾아졌으므로 벌레의 수를 증가시킨다.
         }
+        cout<<worm<<endl;
     }
-    return count;
 }
 
 void init(){
-    cin>>M>>N>>K;
+    cin>>M>>N>>B;
     map.assign(N, vector<int>(M, 0));
-    visited.assign(N, vector<bool>(M, 0));
-    for(int i = 0 ; i < K ; i++){
-        int m, n;
-        cin>>m>>n;
-        map[n][m] = 1;
+    visit.assign(N, vector<bool>(M, false));
+    
+    for(int i = 0 ; i < B ; i++){
+        int x,y;
+        cin>>y>>x;
+        map[x][y] = 1;
+        q.push(make_pair(x, y));
+    }
+    worm = 0;
+    dir.push_back(make_pair(0, 1));
+    dir.push_back(make_pair(0, -1));
+    dir.push_back(make_pair(1, 0));
+    dir.push_back(make_pair(-1, 0));
+}
+
+void solve(pair<int, int> start){
+    queue<pair<int, int> > tQ;
+    tQ.push(start);
+    while(!tQ.empty()){
+        pair<int, int> now = tQ.front();
+        tQ.pop();
+        pair<int, int> next;
+        for(int i = 0 ; i < 4 ; i++){
+            next.first = now.first + dir.at(i).first;
+            next.second = now.second + dir.at(i).second;
+            
+            if(next.first < 0 || next.second < 0 || next.first >= N || next.second >= M || visit[next.first][next.second] || map[next.first][next.second] == 0)
+                continue;
+            
+            visit[next.first][next.second] = true;
+            tQ.push(next);
+        }
     }
 }

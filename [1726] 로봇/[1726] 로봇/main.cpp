@@ -9,128 +9,154 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+
 using namespace std;
-typedef pair<int, int> pii;
-typedef tuple<int, int, int> tiii;
-vector<pii> dir = {pii(0, 1), pii(0, -1), pii(1, 0),pii(-1, 0)}; // 동쪽이 0, 서쪽이 1, 남쪽이 2, 북쪽이 3
-vector< vector<pii> > factory;
-vector< vector<bool> > visit;
-int row, col, startI, startJ, startDir, endI, endJ, endDir, curDir, cost = 0;
-void Move();
+
+struct Robot{
+    pair<int, int> loc;
+    int dir;
+    int weight;
+};
+
+int M, N;
+Robot start, fin = {make_pair(0, 0), 0,0};
+
+int map[100][100][5]; //동서남북의 weight 값을 기록하기 위해 3차원으로 설정
+vector<pair<int, int> > dir; //1 동 2 서 3 남 4 북
+queue<Robot> q;
+
+void init();
+void solve();
 int turnLeft(int);
 int turnRight(int);
-int main(int argc, const char * argv[]) {
-    cin>>row>>col;
-    factory.assign(row, vector<pii>(col, pii(0, 0)));
-    visit.assign(row, vector<bool>(col, 0));
-    for(int i = 0 ; i < row ; i++){
-        for(int j = 0 ; j < col ; j++){
-            cin>>factory[i][j].first;
-            if(factory[i][j].first == 1)
-                visit[i][j] = true;
-        }
-    }
+pair<int, int> move (pair<int, int>, int, int);
+void print();
 
-    cin>>startI>>startJ>>startDir;
-    cin>>endI>>endJ>>endDir;
-    startI--;
-    startJ--;
-    endI--;
-    endJ--;
-    startDir--;
-    endDir--;
-    curDir = startDir;
-    Move();
-    cout<<factory[endI][endJ].first<<endl;
+int main(){
+    init();
+    solve();
     return 0;
 }
 
-void Move(){
-    queue<tiii> robotQ;
-    robotQ.push(tiii(startI, startJ, startDir));
-    visit[startI][startJ] = true;
-    while(!robotQ.empty()){
-        int startI = get<0>(robotQ.front());
-        int startJ = get<1>(robotQ.front());
-        int startDir = get<2>(robotQ.front());
-        visit[startI][startJ] = true;
-        robotQ.pop();
-        int leftDir = turnLeft(startDir);
-        int rightDir = turnRight(startDir);
-        printf("%d, %d, %d", startI, startJ, startDir);
-        if(startI == endI && startJ == endJ && startDir == endDir){
-            break;
-        }
-        else{// go 1 or 2 or 3
-        int copyI = startI;
-        int copyJ = startJ;
-        int i;
-        for(i = 0 ; i < 3 ; i++){
-            int newI = startI + dir.at(startDir).first;
-            int newJ = startJ + dir.at(startDir).second;
-            if(newI >= 0 && newJ >= 0 && newI < row && newJ < col && visit[newI][newJ] == false){
-                visit[newI][newJ] = true;
-                factory[newI][newJ].first = factory[copyI][copyJ].first + 1;
-                startI = newI;
-                startJ = newJ;
-                if(startI == endI && startJ == endJ){
-                    i++;
-                    break;
-                }
-                
-                //continue;
-            }else
+void solve(){
+    //시작점과 끝점이 같을 경우
+    if(start.loc.first == fin.loc.first && start.loc.second == fin.loc.second && start.dir == fin.dir ){
+        cout<<0<<endl;
+        return;
+    }
+    
+    while(!q.empty()){
+        Robot now = q.front();
+        q.pop();
+        //현재 보고 있는 방향이 뚫려있는 경우
+        int limit = 3; //한번에 움직일 수 있는 최대 횟수
+        Robot copyNow = now;
+        
+        while(limit-- > 0){ // 현재의 방향으로 직진(최대 3번까지 맵에 모두 기록)
+            pair<int, int> nextLoc = make_pair(copyNow.loc.first + dir.at(copyNow.dir).first, copyNow.loc.second + dir.at(copyNow.dir).second);
+            if(nextLoc.first < 0 || nextLoc.second < 0 || nextLoc.first >= M || nextLoc.second >= N || map[nextLoc.first][nextLoc.second][copyNow.dir] == -1){
                 break;
-        }
-        if(i > 0){
-            robotQ.push(tiii(startI, startJ, startDir));
-            //cost++;
-        }
-        
-        if(factory[copyI][copyJ].second < 4){
-            if(factory[copyI][copyJ].second < 3){
-                
-                factory[copyI][copyJ].second++;
-                factory[copyI][copyJ].first++;
-                robotQ.push(tiii(copyI, copyJ, leftDir));
-            }else{
-                
-                factory[copyI][copyJ].second++;
-                factory[copyI][copyJ].first--;
-                robotQ.push(tiii(copyI, copyJ, leftDir));
             }
+            if(map[nextLoc.first][nextLoc.second][copyNow.dir] != 0 && map[nextLoc.first][nextLoc.second][copyNow.dir] < now.weight + 1)
+                break;
+            Robot next = {nextLoc, copyNow.dir, now.weight + 1};
+            map[next.loc.first][next.loc.second][next.dir] = next.weight;
+            q.push(next);
+            copyNow = next;
         }
         
-        cout<<endl;
-//        cout<<"("<<factory[3][1].first<<", "<<factory[3][1].second<<")"<<endl;;
-        for(int i = 0 ; i < row ; i++){
-            for(int j = 0 ; j < col ; j++){
-                cout<<"("<<factory[i][j].first<<", "<<factory[i][j].second<<")"<<'\t';
-            }cout<<endl;
+        Robot next = {now.loc, turnLeft(now.dir), now.weight + 1};
+        // 방문한 적이 없거나 (0), 해당 위치의 weight가 방문하려는 weight 보다 클 경우 (업데이트 필요)
+        if(map[next.loc.first][next.loc.second][next.dir] == 0 || map[next.loc.first][next.loc.second][next.dir] > next.weight){
+            map[next.loc.first][next.loc.second][next.dir] = next.weight;
+            q.push(next);
         }
+        
+        next = {now.loc, turnRight(now.dir), now.weight + 1};
+        // 방문한 적이 없거나 (0), 해당 위치의 weight가 방문하려는 weight 보다 클 경우 (업데이트 필요)
+        if(map[next.loc.first][next.loc.second][next.dir] == 0 || map[next.loc.first][next.loc.second][next.dir] > next.weight){
+            map[next.loc.first][next.loc.second][next.dir] = next.weight;
+            q.push(next);
         }
     }
+    // 끝점의 위치 출력
+    cout<<map[fin.loc.first][fin.loc.second][fin.dir]<<endl;
 }
 
-int turnLeft(int curDir){
-    if(curDir == 0)
-        return 3;
-    else if(curDir == 1)
-        return 2;
-    else if(curDir == 2)
-        return 0;
-    else
+int turnLeft(int dir){
+    if(dir == 1){ //동
+        return 4; //북
+    }else if(dir == 2){ //서
+        return 3; //남
+    }else if(dir == 3){ //남
         return 1;
-}
-
-int turnRight(int curDir){
-    if(curDir == 0)
+    }else if(dir == 4){//북
         return 2;
-    else if(curDir == 1)
-        return 3;
-    else if(curDir == 2)
-        return 1;
-    else
-        return 0;
+    }
+    return -1;
 }
 
+int turnRight(int dir){
+    if(dir == 1){ //동
+        return 3; //남
+    }else if(dir == 2){ //서
+        return 4;//북
+    }else if(dir == 3){//남
+        return 2;
+    }else if(dir == 4){
+        return 1;
+    }
+    return -1;
+}
+
+void init(){
+    freopen("input.txt", "r", stdin);
+    cin>>M>>N;
+    for(int i = 0 ; i < M ; i++){
+        for(int j = 0 ; j < N ; j++){
+            int num;
+            cin>>num;
+            if(num == 1)
+                num = -1;
+            for(int k = 1 ; k < 5 ; k++){
+                map[i][j][k] = num;
+            }
+        }
+    }
+    cin>>start.loc.first>>start.loc.second>>start.dir;
+    cin>>fin.loc.first>>fin.loc.second>>fin.dir;
+    // 위치 보정
+    start.loc.first--;
+    start.loc.second--;
+    fin.loc.first--;
+    fin.loc.second--;
+    
+    q.push(start);
+    
+    dir.push_back(make_pair(0, 0));
+    dir.push_back(make_pair(0, 1)); //동
+    dir.push_back(make_pair(0, -1)); //서
+    dir.push_back(make_pair(1, 0)); //남
+    dir.push_back(make_pair(-1, 0)); //북
+}
+
+void print(){
+    for(int k = 1 ; k < 5 ; k++){
+        if(k==1){
+            cout<<"오른쪽"<<endl;
+        }else if(k==2){
+            cout<<"왼쪽"<<endl;
+        }else if(k==3){
+            cout<<"아래쪽"<<endl;
+        }else if(k==4){
+            cout<<"위쪽"<<endl;
+        }
+        
+        for(int i = 0 ; i < M ; i++){
+            for(int j = 0 ; j < N ; j++){
+                cout<<map[i][j][k]<<"\t"<<"\t";
+            }cout<<endl;
+        }cout<<endl;
+    }
+    
+}
