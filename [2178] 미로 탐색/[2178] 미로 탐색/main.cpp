@@ -9,49 +9,72 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <stdio.h>
 using namespace std;
 
-vector< vector<int> > map;
-vector< pair<int, int> > direction = {pair<int, int>(1, 0), pair<int, int>(0, 1), pair<int, int>(-1, 0), pair<int, int>(0, -1)};
-int row, col;
-int endI, endJ;
-int counter = 1;
-void BFS(int, int);
-// 1은 이동가능 0은 이동 불가능 (2는 이동 완료)
-int main(int argc, const char * argv[]) {
-    cin>>row>>col;
-    map.assign(row, vector<int>(col));
-    endI = row - 1;
-    endJ = col - 1;
-    
-    for(int i = 0 ; i < row ; i++){
-        for(int j = 0 ; j < col ; j++){
-            scanf("%1d",&map[i][j]);
-        }
-    }
+vector<vector<int> > map;
+vector<vector<bool> > visit;
+vector<pair<int, int> > dir;
 
-    BFS(0, 0);
-    cout<<map[endI][endJ]<<endl;
+queue<pair<int, int> > q;
+
+int N, M;
+
+void init();
+void solve();
+
+int main(){
+    init();
+    solve();
     return 0;
 }
 
-void BFS(int startI, int startJ){
-    queue<pair<int, int>> queue;
-    queue.push(pair<int, int>(startI, startJ));
-    
-    while(!queue.empty()){
-        startI = queue.front().first;
-        startJ = queue.front().second;
-        queue.pop();
-        for(int i = 0 ; i < 4 ; i++){
-            int neighborI = startI + direction.at(i).first;
-            int neighborJ = startJ + direction.at(i).second;
-            if(neighborI >= 0 && neighborI < row && neighborJ >= 0 && neighborJ < col){
-                if(map[neighborI][neighborJ] == 1){
-                    queue.push(pair<int, int>(neighborI, neighborJ));
-                    map[neighborI][neighborJ] = map[startI][startJ] + 1; //몇 번의 너비 탐색으로 도달했는지를 기록한다
-                }
-            }
+void solve(){
+    while(!q.empty()){
+        pair<int, int> now = q.front();
+        q.pop();
+        if(now.first == N - 1  && now.second == M - 1){ //끝에 다다르면
+            cout<<map[now.first][now.second]<<endl;
+            return;
+        }
+        visit[now.first][now.second] = true;
+        pair<int, int> next;
+        for(int i = 0 ; i < 4 ;i++){
+            next.first = now.first + dir.at(i).first;
+            next.second = now.second + dir.at(i).second;
+            
+            if(next.first < 0 || next.second < 0 || next.first >= N || next.second >= M || visit[next.first][next.second] || map[next.first][next.second] < 0)
+                continue;
+            
+            visit[next.first][next.second] = true;
+            map[next.first][next.second] = map[now.first][now.second] + 1;
+            q.push(next);
         }
     }
+}
+
+void init(){
+    freopen("input.txt", "r", stdin);
+    cin>>N>>M;
+    map.assign(N, vector<int>(M, 0));
+    visit.assign(N, vector<bool>(M, false));
+    for(int i = 0 ; i < N ; i++){
+        for(int j = 0 ; j < M ; j++){
+            int num;
+            scanf("%1d", &num); //숫자가 붙어있어서 이렇게 받음
+            
+            map[i][j] = num;
+            //길과 벽 새로 셋팅
+            if(map[i][j] == 1)
+                map[i][j] = 0;
+            else
+                map[i][j] = -1;
+        }
+    }
+    map[0][0] = 1; //시작 weight == 1
+    q.push(make_pair(0, 0));
+    dir.push_back(make_pair(0, 1));
+    dir.push_back(make_pair(0, -1));
+    dir.push_back(make_pair(1, 0));
+    dir.push_back(make_pair(-1, 0));
 }
