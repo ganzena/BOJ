@@ -8,77 +8,102 @@
 
 #include <iostream>
 #include <vector>
+#include <queue>
+#include <algorithm>
 
 using namespace std;
 
-// Direction = 0 : 북쪽 / 1 : 동쪽 / 2 : 남쪽 / 3 : 서쪽
-// Map = 0 : 빈칸 / 1 : 벽 / 2 : 청소됨
-struct Vaccum{
-    int r; //세로 위치
-    int c; //가로 위치
-    int d; //dir
+struct Robot{
+    pair<int, int> loc;
+    int dir;
+    int cnt;
+    int stack;
 };
-int n, m; // 세로 가로
 
-vector< vector<int> > map(50, vector<int>(50, 0));
-vector<pair<int, int>> dir = {pair<int, int>(-1, 0), pair<int, int>(0, 1), pair<int, int>(1, 0), pair<int, int>(0, -1)};
-Vaccum vaccum;
-int totalClean = 0;
+vector<pair<int, int> > dir;
+vector<vector<int> > map;
+vector<vector<bool> > visit;
+queue<Robot> q;
 
-void init(){
-    cin>>n>>m; // y x
-    cin>>vaccum.r>>vaccum.c>>vaccum.d; //로봇 위치 및 방향 초기화
-    for(int i = 0 ; i < n ; i++){
-        for(int j = 0 ; j < m ; j++){
-            cin>>map[i][j];
-        }
-    }
-}
+int N, M, ans = 0;
+Robot robot;
 
-void clean(){
-    int counter = 0;
-    while(1){
-        map[vaccum.r][vaccum.c] = 2;
-        vaccum.d = (vaccum.d + 1)%4;
-        int nextR = vaccum.r + dir.at(vaccum.d).first;
-        int nextC = vaccum.c + dir.at(vaccum.d).second;
-        if(counter != 4){ // 아직 회전할 수 있을 때
-            if(map[nextR][nextC] != 0){
-                counter++;
-            }else{
-                vaccum.r = nextR;
-                vaccum.c = nextC;
-                counter = 0;
-            }
-        }else{ // 더 이상 회전 못할 때
-            int backDir = (vaccum.d + 2)%4;
-            int backR = vaccum.r + dir.at(backDir).first;
-            int backC = vaccum.c + dir.at(backDir).second;
-            if(map[backR][backC] == 1){ //후진을 했는데도 벽임
-                break;
-            }else{
-                vaccum.r = backR;
-                vaccum.c = backC;
-                counter = 0;
-            }
-        }
-    }
-}
-
-void count(){
-    for(int i = 0 ; i < n ; i++){
-        for(int j = 0 ; j < m ; j++){
-            if(map[i][j] == 2)
-                totalClean++;
-        }
-    }
-}
+void init();
+void solve();
+int turnLeft(int);
 
 int main(int argc, const char * argv[]) {
     init();
-    clean();
-    count();
-    cout<<totalClean<<endl;
+    solve();
+    return 0;
+}
+
+void solve(){
+    while(!q.empty()){
+        Robot now = q.front();
+        q.pop();
+        ans = now.cnt;
+        while(now.stack++ < 4){ // 로봇은 총 네번 회전하고 빠꾸한다
+            now.dir = turnLeft(now.dir);
+            pair<int, int> nextLoc = make_pair(now.loc.first + dir.at(now.dir).first, now.loc.second + dir.at(now.dir).second);
+            
+            if(map[nextLoc.first][nextLoc.second] == 1 || visit[nextLoc.first][nextLoc.second])
+                continue;
+            Robot next = {nextLoc, now.dir, now.cnt + 1, 0};
+            visit[nextLoc.first][nextLoc.second] = true;
+            
+            q.push(next);
+            break;
+        }
+        if(q.empty()){ //청소할 곳이 없었을 경우 후진
+            pair<int, int> backLoc = make_pair(now.loc.first - dir.at(now.dir).first, now.loc.second - dir.at(now.dir).second);
+            if(map[backLoc.first][backLoc.second] == 1) //후진하려는데 벽이면 끝
+                break;
+            // 이미 청소한 곳이면 그대로 아니면 청소 갯수 증가
+            Robot next = {backLoc, now.dir, (visit[backLoc.first][backLoc.second] ? now.cnt : now.cnt + 1), 0};
+            visit[backLoc.first][backLoc.second] = true;
+            
+            q.push(next);
+        }
+    }
+    
+    cout<<ans<<endl;
+}
+
+int turnLeft(int dir){
+    if(dir == 0)
+        return 3;
+    else if(dir == 1)
+        return 0;
+    else if(dir == 2)
+        return 1;
+    else if(dir == 3)
+        return 2;
+    return -1;
+}
+
+void init(){
+    //freopen("input.txt", "r", stdin);
+    cin>>N>>M;
+    
+    map.assign(N, vector<int>(M, 0));
+    visit.assign(N, vector<bool>(M, false));
+    robot = {make_pair(0, 0), 0, 0, 0};
+    cin>>robot.loc.first>>robot.loc.second>>robot.dir;
+    visit[robot.loc.first][robot.loc.second] = true; //청소상태로 표시
+    robot.cnt += 1; //청소 갯수 증가
+    q.push(robot);
+    
+    for(int i = 0 ; i < N ; i++){
+        for(int j = 0 ; j < M ; j++){
+            cin>>map[i][j];
+        }
+    }
+    
+    dir.push_back(make_pair(-1, 0));
+    dir.push_back(make_pair(0, 1));
+    dir.push_back(make_pair(1, 0));
+    dir.push_back(make_pair(0, -1));
 }
 
 
