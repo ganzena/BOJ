@@ -1,9 +1,0 @@
-INDEX VERSION 1.127+/Users/YTW/BOJ/BOJ_JAVA/.metadata/.plugins/org.eclipse.jdt.core
-1733948356.index
-1866170954.index
-203063133.index
-3364780788.index
-2645609735.index
-58686810.index
-630839006.index
-2356092069.index
