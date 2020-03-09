@@ -54,257 +54,63 @@ void move(){
     for(int i = 0 ; i < 10 ; i++){
         Piece* now = &pieceV.at(tempV.at(i)); // 움직일 말(tmpV의 번호는 pieceV의 index)
         int cmd = command.at(i); // 움직일 횟수
-        visit[now->x][now->y] = false;
-        if(map[now->x][now->y + 1] == -1)
+        visit[now->x][now->y] = false; // 움직이기 전 현 위치 미방문 처리 && 도착에 있는 말들은 미방문으로 처리
+        if(now->x == 8 && now->y == 1) //현재 위치가 도착이면 진행 안 함
             continue;
-        // 이동이 불가능할 경우 첫 위치로 재설정해야함
-        int initX = now->x;
-        int initY = now->y;
-        // 이동 성공 플래그
-        bool success = true;
         while(cmd-- > 0){
             int yy = now->y + 1;
             int nextScore = map[now->x][yy];
-            if(now->x == 0){
-                if(nextScore == 10){ //현재 위치는 파란색 직전
-                    if(cmd == 0){ //이동은 파란색 칸에서 끝나므로 파란 화살표로 이동해야함
-                        now->x = 1;
-                        now->y = 0;
-                        if(visit[now->x][now->y]){
-                            success = false;
-                            break;
-                        }
-                        now->score += map[now->x][now->y];
-                    }else{ //red
-                        now->x = 2;
-                        now->y = 0;
-                    }
-                }else{
-                    if(cmd == 0){ // 같은 행 내 이동
-                        now->y++;
-                        if(visit[now->x][now->y]){
-                            success = false;
-                            break;
-                        }
-                        now->score += map[now->x][now->y];
-                    }else{
-                        now->y++;
-                    }
+            if(now->x == 0 && nextScore == 10){
+                if(cmd == 0){ //이동은 파란색 칸에서 끝나므로 파란 화살표로 이동해야함
+                    now->x = 1; // 10 ~ 25
+                }else{ //red
+                    now->x = 2; // 10 ~ 20
                 }
-            }else if(now->x == 1){ // 10 ~ 25
-                if(nextScore == 25){ //현재 위치는 파란색 직전
-                    if(cmd == 0){ //이동은 파란색 칸에서 끝나므로 파란 화살표로 이동해야함
-                        now->x = 7; //25 ~ 40
-                        now->y = 0;
-                        if(visit[now->x][now->y]){
-                            success = false;
-                            break;
-                        }
-                        now->score += map[now->x][now->y];
-                    }else{ //red
-                        now->x = 7; //20~30
-                        now->y = 0;
-                    }
-                }else{
-                    if(cmd == 0){ // 같은 행 내 이동
-                        now->y++;
-                        if(visit[now->x][now->y]){
-                            success = false;
-                            break;
-                        }
-                        now->score += map[now->x][now->y];
-                    }else{
-                        now->y++;
-                    }
+                now->y = 0;
+            } else if(now->x == 1 && nextScore == 25){
+                now->x = 7; // 25 ~ 40
+                now->y = 0;
+            } else if(now->x == 2 && nextScore == 20){ //현재 위치는 파란색 직전
+                if(cmd == 0){ //이동은 파란색 칸에서 끝나므로 파란 화살표로 이동해야함
+                    now->x = 3; //20~25
+                }else{ //red
+                    now->x = 4; //20~30
                 }
+                now->y = 0;
+            } else if(now->x == 3 && nextScore == 25){ //20~25
+                now->x = 7; // 25 ~ 40
+                now->y = 0;
+            } else if(now->x == 4 && nextScore == 30){ //20~30
+                if(cmd == 0){ //이동은 파란색 칸에서 끝나므로 파란 화살표로 이동해야함
+                    now->x = 5; //20~25
+                }else{ //red
+                    now->x = 6; //20~30
+                }
+                now->y = 0;
+            } else if(now->x == 5 && nextScore == 25){ //30~25
+                now->x = 7; //25~40
+                now->y = 0;
                 
-            }else if(now->x == 2){ // 10 ~ 20
-                if(nextScore == 20){ //현재 위치는 파란색 직전
-                    if(cmd == 0){ //이동은 파란색 칸에서 끝나므로 파란 화살표로 이동해야함
-                        now->x = 3; //20~25
-                        now->y = 0;
-                        if(visit[now->x][now->y] ){
-                            success = false;
-                            break;
-                        }
-                        now->score += map[now->x][now->y];
-                    }else{ //red
-                        now->x = 4; //20~30
-                        now->y = 0;
-                    }
-                }else{
-                    if(cmd == 0){ // 같은 행 내 이동
-                        now->y++;
-                        if(visit[now->x][now->y]){
-                            success = false;
-                            break;
-                        }
-                        now->score += map[now->x][now->y];
-                    }else{
-                        now->y++;
-                    }
-                }
-                
-            }else if(now->x == 3){ //20~25
-                if(nextScore == 25){ //현재 위치는 파란색 직전
-                    if(cmd == 0){ //이동은 파란색 칸에서 끝나므로 파란 화살표로 이동해야함
-                        now->x = 7; //25~40
-                        now->y = 0;
-                        if(visit[now->x][now->y]){
-                            success = false;
-                            break;
-                        }
-                        now->score += map[now->x][now->y];
-                    }else{ //red
-                        now->x = 7; //25~40
-                        now->y = 0;
-                    }
-                }else{
-                    if(cmd == 0){ // 같은 행 내 이동
-                        now->y++;
-                        if(visit[now->x][now->y]){
-                            success = false;
-                            break;
-                        }
-                        now->score += map[now->x][now->y];
-                    }else{
-                        now->y++;
-                    }
-                }
-                
-            }else if(now->x == 4){ //20~30
-                if(nextScore == 30){ //현재 위치는 파란색 직전
-                    if(cmd == 0){ //이동은 파란색 칸에서 끝나므로 파란 화살표로 이동해야함
-                        now->x = 5; //20~25
-                        now->y = 0;
-                        if(visit[now->x][now->y]){
-                            success = false;
-                            break;
-                        }
-                        now->score += map[now->x][now->y];
-                    }else{ //red
-                        now->x = 6; //20~30
-                        now->y = 0;
-                    }
-                }else{
-                    if(cmd == 0){ // 같은 행 내 이동
-                        now->y++;
-                        if(visit[now->x][now->y]){
-                            success = false;
-                            break;
-                        }
-                        now->score += map[now->x][now->y];
-                    }else{
-                        now->y++;
-                    }
-                }
-            }else if(now->x == 5){ //30~25
-                if(nextScore == 25){ //현재 위치는 파란색 직전
-                    if(cmd == 0){ //이동은 파란색 칸에서 끝나므로 파란 화살표로 이동해야함
-                        now->x = 7; //25~40
-                        now->y = 0;
-                        if(visit[now->x][now->y]){
-                            success = false;
-                            break;
-                        }
-                        now->score += map[now->x][now->y];
-                    }else{ //red
-                        now->x = 7; //25~40
-                        now->y = 0;
-                    }
-                }else{
-                    if(cmd == 0){ // 같은 행 내 이동
-                        now->y++;
-                        if(visit[now->x][now->y]){
-                            success = false;
-                            break;
-                        }
-                        now->score += map[now->x][now->y];
-                    }else{
-                        now->y++;
-                    }
-                }
-            }else if(now->x == 6){ //30~40
-                if(nextScore == 40){ //현재 위치는 도착
-                    if(cmd == 0){ //이동은 파란색 칸에서 끝나므로 파란 화살표로 이동해야함
-                        now->x = 8; //25~40
-                        now->y = 0;
-                        if(visit[now->x][now->y]){
-                            success = false;
-                            break;
-                        }
-                        now->score += map[now->x][now->y];
-                    }else{ //red
-                        now->x = 8; //25~40
-                        now->y = 0;
-                    }
-                }else{
-                    if(cmd == 0){ // 같은 행 내 이동
-                        now->y++;
-                        if(visit[now->x][now->y]){
-                            success = false;
-                            break;
-                        }
-                        if(map[now->x][now->y] == 40 && visit[7][3]){
-                            success = false;
-                            break;
-                        }
-                        now->score += map[now->x][now->y];
-                    }else{
-                        now->y++;
-                    }
-                }
-            }else if(now->x == 7){ //25~40
-                if(nextScore == 40){ //현재 위치는 도착
-                    if(cmd == 0){ //이동은 파란색 칸에서 끝나므로 파란 화살표로 이동해야함
-                        now->x = 8; //25~40
-                        now->y = 0;
-                        if(visit[now->x][now->y]){
-                            success = false;
-                            break;
-                        }
-                        now->score += map[now->x][now->y];
-                    }else{ //red
-                        now->x = 8; //25~40
-                        now->y = 0;
-                    }
-                }else{// 같은 행 내 이동
-                    if(cmd == 0){ // 같은 행 내 이동
-                        now->y++;
-                        if(visit[now->x][now->y]){
-                            success = false;
-                            break;
-                        }
-                        now->score += map[now->x][now->y];
-                    }else{
-                        now->y++;
-                    }
-                }
-            }else if(now->x == 8){ //40 도착
-                if(nextScore == -1){ //현재 위치는 도착
-                    break;
-                }else{// 같은 행 내 이동
-                    if(cmd == 0){ // 같은 행 내 이동
-                        now->y++;
-                        if(visit[now->x][now->y]){
-                            success = false;
-                            break;
-                        }
-                        now->score += map[now->x][now->y];
-                    }else{
-                        now->y++;
-                    }
-                }
+            } else if(now->x == 6 && nextScore == 40){ //30~40
+                now->x = 8; //40 ~ 종료
+                now->y = 0;
+            } else if(now->x == 7 && nextScore == 40){ //25~40
+                now->x = 8; ///40 ~ 종료
+                now->y = 0;
+            } else if(now->x == 8 && nextScore == -1){ //도착에 도달
+                break;
+            } else{
+                now->y++;
             }
         }
-        if(!success){
-            now->x = initX;
-            now->y = initY;
-        }
-        visit[now->x][now->y] = true;
-//        cout<<tempV.at(i)<<"가 "<<command.at(i)<<" 번 이동 : ("<<map[initX][initY]<<") -> "<<map[now->x][now->y]<<endl;
+        // 이동이 끝난 자리가 이미 말이 있다면 테스트케이스에서 제외
+        // 도착에 도달했던 말은
+        if(visit[now->x][now->y])
+            return;
+        now->score += map[now->x][now->y]; //현재 위치의 점수를 더한다
+        if(now->x != 8 || now->y != 1) //도착은 방문 처리 안함
+            visit[now->x][now->y] = true; //방문 표시를 한다.
     }
-//    cout<<"--------------------------------------"<<endl;
     int sum = 0;
     for(int i = 0 ; i < 4 ; i++){
         sum += pieceV.at(i).score;
@@ -314,12 +120,11 @@ void move(){
 
 void solve(int depth){
     if(depth == 10){
-        // 만들어진 tempV로 말 이동
         move();
         return;
     }
     
-    for(int i = 0 ; i < 4 ; i++){
+    for(int i = 0 ; i < 4 ; i++){ // 명령을 수행할 말들의 조합
         tempV.push_back(i);
         solve(depth + 1);
         tempV.pop_back();

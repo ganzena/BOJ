@@ -46,25 +46,9 @@
             filePath = "[2019 &#x1112;&#x1161;][17825] &#x110c;&#x116e;&#x1109;&#x1161;&#x110b;&#x1171; &#x110b;&#x1172;&#x11be;&#x1102;&#x1169;&#x11af;&#x110b;&#x1175;/main.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "65"
-            endingLineNumber = "65"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
             landmarkName = "move()"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F2235282-0429-4F1D-822D-8AD932D51D3E"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "[2019 &#x1112;&#x1161;][17825] &#x110c;&#x116e;&#x1109;&#x1161;&#x110b;&#x1171; &#x110b;&#x1172;&#x11be;&#x1102;&#x1169;&#x11af;&#x110b;&#x1175;/main.cpp"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "318"
-            endingLineNumber = "318"
-            landmarkName = "solve(depth)"
             landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
@@ -87,22 +71,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "2EA504DC-4079-45E3-B824-5959EAAA03BD"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "[2019 &#x1112;&#x1161;][17825] &#x110c;&#x116e;&#x1109;&#x1161;&#x110b;&#x1171; &#x110b;&#x1172;&#x11be;&#x1102;&#x1169;&#x11af;&#x110b;&#x1175;/main.cpp"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "249"
-            endingLineNumber = "249"
-            landmarkName = "move()"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "3AD441A3-F061-45D7-878F-9E2D104D0440"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -110,8 +78,8 @@
             filePath = "[2019 &#x1112;&#x1161;][17825] &#x110c;&#x116e;&#x1109;&#x1161;&#x110b;&#x1171; &#x110b;&#x1172;&#x11be;&#x1102;&#x1169;&#x11af;&#x110b;&#x1175;/main.cpp"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "319"
-            endingLineNumber = "319"
+            startingLineNumber = "124"
+            endingLineNumber = "124"
             landmarkName = "solve(depth)"
             landmarkType = "9">
          </BreakpointContent>
