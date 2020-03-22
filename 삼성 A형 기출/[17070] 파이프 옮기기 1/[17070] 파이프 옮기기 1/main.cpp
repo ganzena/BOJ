@@ -28,7 +28,7 @@ Pipe sero(Pipe);
 Pipe daegak(Pipe);
 
 int N;
-int cnt = 0;
+long long int cnt = 0;
 Pipe pipe;
 
 int main(int argc, const char * argv[]) {
