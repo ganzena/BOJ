@@ -15,9 +15,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "198"
-            endingLineNumber = "198"
-            landmarkName = "init()"
-            landmarkType = "9">
+            endingLineNumber = "198">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -208,22 +206,6 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "155"
             endingLineNumber = "155"
-            landmarkName = "solve(depth, start)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "E96035F1-72E8-4667-B811-E26D7A957DA3"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "&#x110f;&#x1169;&#x1110;&#x1175;&#x11bc;&#x1110;&#x1166;&#x1109;&#x1173;&#x1110;&#x1173; &#x1106;&#x1169;&#x110b;&#x1174;&#x1100;&#x1169;&#x1109;&#x1161; 2/main.cpp"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
             landmarkName = "solve(depth, start)"
             landmarkType = "9">
          </BreakpointContent>
