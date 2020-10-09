@@ -20,7 +20,7 @@ struct CCTV {
 
 vector< vector<int> > map;
 vector<CCTV> cctvVector;
-vector<int> rotateNum; // = {0, 4, 2, 4, 4, 1};
+vector<int> rotateNum; // = {0, 4, 2, 4, 4, 1} 각 CCTV 별로 회전 가능한 숫자
 //    0
 //3       1
 //    2
@@ -38,6 +38,7 @@ int main(int argc, const char * argv[]) {
     cout<<missArea<<endl;
     return 0;
 }
+
 void checkMiss(){
     int temp = 0;
     for(int i = 0 ; i < N ; i++){

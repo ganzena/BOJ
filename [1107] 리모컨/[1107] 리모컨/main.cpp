@@ -92,7 +92,7 @@ void set(){
 
 
 void init(){
-    //freopen("input.txt", "r", stdin);
+    freopen("input.txt", "r", stdin);
     cin>>N>>M;
     numbers.assign(10, true);
     for(int i = 0 ; i < M ; i++){
